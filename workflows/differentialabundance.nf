@@ -719,15 +719,10 @@ workflow DIFFERENTIALABUNDANCE {
     // create temporary contrast files with the entries based on the order of the gathered
     // differential results
 
-    // As contrasts having 'formula' and 'comparison' won't have a variable,
-    // and it is needed for "checkListIsSubset()" in `SHINYNGS` make_app_from_files.R
-    // for backwards-compatibility, keep only the channels that have non-empty variable
-
     // Create a channel with the differential results and the corresponding map with
     // the contrast entries
     differential_with_contrast = ch_paramsets
         .join( ch_differential_results
-            .filter { meta, contrast, results -> contrast.variable?.trim() }
             .groupTuple()
         )   // [meta, [meta with contrast], [differential results]]
         .join( ch_contrasts )   // [meta, [contrast], [variable], [reference], [target], [formula], [comparison]]
@@ -766,10 +761,34 @@ workflow DIFFERENTIALABUNDANCE {
             row[0].params.shinyngs_build_app
         }
         .multiMap { meta, meta_with_contrast, differential_results, contrast_file, samplesheet, features, matrices ->
+            // Filter for shinyngs: keep only contrasts with non-empty variable (simple contrasts)
+            // as shinyngs checkListIsSubset() requires non-empty variables
+            def filtered_pairs = [meta_with_contrast, differential_results].transpose().findAll { contrast_meta, results ->
+                contrast_meta.variable?.trim()
+            }
+            def filtered_contrast_meta = filtered_pairs ? filtered_pairs.collect { it[0] } : []
+            def filtered_results = filtered_pairs ? filtered_pairs.collect { it[1] } : []
+            
+            // Create filtered contrast file for shinyngs
+            def contrast_maps = filtered_contrast_meta.collect { contrast ->
+                def keys = ['id', 'variable', 'reference', 'target', 'blocking', 'exclude_samples_col', 'exclude_samples_values']
+                keys.collectEntries { key -> [(key): contrast[key] ?: ''] }
+            }
+            def filtered_contrast_file = contrast_file
+            if (contrast_maps) {
+                def header = contrast_maps[0].keySet().join(',')
+                def content = contrast_maps.collect { it.values().join(',') }.sort().reverse()
+                def lines = header + '\n' + content.join('\n') + '\n'
+                filtered_contrast_file = file("${workflow.workDir}/tmp_shinyngs/${meta.paramset_name}.csv")
+                filtered_contrast_file.parentFile.mkdirs()
+                filtered_contrast_file.text = lines
+            }
+            
             matrices: [meta, samplesheet, features, matrices]
-            contrasts_and_differential: [meta, contrast_file, differential_results]
+            contrasts_and_differential: [meta, filtered_contrast_file, filtered_results]
             contrast_stats_assay: meta.params.exploratory_assay_names.split(',').findIndexOf { it == meta.params.exploratory_final_assay } + 1
         }
+    
     SHINYNGS_APP(
         ch_shinyngs_input.matrices,    // meta, samples, features, [  matrices ]
         ch_shinyngs_input.contrasts_and_differential,   // meta, contrast file, [ differential results ]
