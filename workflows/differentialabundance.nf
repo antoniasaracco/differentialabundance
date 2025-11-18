@@ -764,8 +764,18 @@ workflow DIFFERENTIALABUNDANCE {
             row[0].params.shinyngs_build_app
         }
         .multiMap { meta, meta_with_contrast, differential_results, contrast_file, samplesheet, features, matrices ->
+            // Regenerate contrast file with only filtered contrasts
+            def contrast_keys = ['id', 'variable', 'reference', 'target', 'blocking', 'exclude_samples_col', 'exclude_samples_values']
+            def filtered_contrast_maps = meta_with_contrast.collect { it.subMap(contrast_keys.findAll { k -> it.containsKey(k) }) }
+            def header = filtered_contrast_maps[0].keySet().join(',')
+            def content = filtered_contrast_maps.collect { it.values().join(',') }.sort().reverse()
+            def lines = header + '\n' + content.join('\n') + '\n'
+            def filtered_contrast_file = file("${workflow.workDir}/tmp_shinyngs/${meta.paramset_name}.csv")
+            filtered_contrast_file.parentFile.mkdirs()
+            filtered_contrast_file.text = lines
+            
             matrices: [meta, samplesheet, features, matrices]
-            contrasts_and_differential: [meta, contrast_file, differential_results]
+            contrasts_and_differential: [meta, filtered_contrast_file, differential_results]
             contrast_stats_assay: meta.params.exploratory_assay_names.split(',').findIndexOf { it == meta.params.exploratory_final_assay } + 1
         }
     
