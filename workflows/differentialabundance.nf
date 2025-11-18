@@ -755,6 +755,7 @@ workflow DIFFERENTIALABUNDANCE {
 
     // Parse input for shinyngs app
     ch_shinyngs_input = differential_with_contrast.differential_results
+        .transpose()
         .filter { meta, contrast, results -> contrast.variable?.trim() }
         .groupTuple()
         .join(ch_contrasts_sorted)
