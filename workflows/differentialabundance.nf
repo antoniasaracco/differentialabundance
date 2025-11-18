@@ -762,30 +762,11 @@ workflow DIFFERENTIALABUNDANCE {
         }
         .multiMap { meta, meta_with_contrast, differential_results, contrast_file, samplesheet, features, matrices ->
             // Filter for shinyngs: keep only contrasts with non-empty variable (simple contrasts)
-            // as shinyngs checkListIsSubset() requires non-empty variables
-            def filtered_pairs = [meta_with_contrast, differential_results].transpose().findAll { contrast_meta, results ->
-                contrast_meta.variable?.trim()
-            }
-            def filtered_contrast_meta = filtered_pairs ? filtered_pairs.collect { it[0] } : []
-            def filtered_results = filtered_pairs ? filtered_pairs.collect { it[1] } : []
-            
-            // Create filtered contrast file for shinyngs
-            def contrast_maps = filtered_contrast_meta.collect { contrast ->
-                def keys = ['id', 'variable', 'reference', 'target', 'blocking', 'exclude_samples_col', 'exclude_samples_values']
-                keys.collectEntries { key -> [(key): contrast[key] ?: ''] }
-            }
-            def filtered_contrast_file = contrast_file
-            if (contrast_maps) {
-                def header = contrast_maps[0].keySet().join(',')
-                def content = contrast_maps.collect { it.values().join(',') }.sort().reverse()
-                def lines = header + '\n' + content.join('\n') + '\n'
-                filtered_contrast_file = file("${workflow.workDir}/tmp_shinyngs/${meta.paramset_name}.csv")
-                filtered_contrast_file.parentFile.mkdirs()
-                filtered_contrast_file.text = lines
-            }
+            def filtered_pairs = [meta_with_contrast, differential_results].transpose().findAll { it[0].variable?.trim() }
+            def filtered_results = filtered_pairs.collect { it[1] }
             
             matrices: [meta, samplesheet, features, matrices]
-            contrasts_and_differential: [meta, filtered_contrast_file, filtered_results]
+            contrasts_and_differential: [meta, contrast_file, filtered_results]
             contrast_stats_assay: meta.params.exploratory_assay_names.split(',').findIndexOf { it == meta.params.exploratory_final_assay } + 1
         }
     
