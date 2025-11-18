@@ -755,18 +755,16 @@ workflow DIFFERENTIALABUNDANCE {
 
     // Parse input for shinyngs app
     ch_shinyngs_input = differential_with_contrast.differential_results
+        .filter { meta, contrast, results -> contrast.variable?.trim() }
+        .groupTuple()
         .join(ch_contrasts_sorted)
         .join(ch_all_matrices)
         .filter { row ->
             row[0].params.shinyngs_build_app
         }
         .multiMap { meta, meta_with_contrast, differential_results, contrast_file, samplesheet, features, matrices ->
-            // Filter for shinyngs: keep only contrasts with non-empty variable (simple contrasts)
-            def filtered_pairs = [meta_with_contrast, differential_results].transpose().findAll { it[0].variable?.trim() }
-            def filtered_results = filtered_pairs.collect { it[1] }
-            
             matrices: [meta, samplesheet, features, matrices]
-            contrasts_and_differential: [meta, contrast_file, filtered_results]
+            contrasts_and_differential: [meta, contrast_file, differential_results]
             contrast_stats_assay: meta.params.exploratory_assay_names.split(',').findIndexOf { it == meta.params.exploratory_final_assay } + 1
         }
     
