@@ -872,11 +872,17 @@ workflow DIFFERENTIALABUNDANCE {
     ch_differential_grouped = differential_with_contrast.differential_results.transpose()
         .join(ch_differential_model, by:[0,1])
         .groupTuple()                                 // [ meta, [meta with contrast], [differential results], [differential model] ]
-        .map { [it[0], it.tail().tail().flatten()] }  // [ meta, [differential results and models] ]
+        .map { tuple ->
+            def files = tuple.tail().tail().collectMany { v -> (v instanceof List) ? v : [v] }
+            [tuple[0], files]
+        }  // [ meta, [differential results and models] ]
 
     ch_functional_grouped = ch_functional_results
         .groupTuple()                                 // [ meta, [meta with contrast], [functional results] ]
-        .map { [it[0], it.tail().tail().flatten()] }  // [ meta, [functional results] ]
+        .map { tuple ->
+            def files = tuple.tail().tail().collectMany { v -> (v instanceof List) ? v : [v] }
+            [tuple[0], files]
+        }  // [ meta, [functional results] ]
 
     // Prepare input for report generation
     // Each paramset will generate one markdown report by gathering all the files created with the same paramset
@@ -889,7 +895,11 @@ workflow DIFFERENTIALABUNDANCE {
         .join(ch_contrasts_sorted)       // [meta, contrast file]
         .join(ch_differential_grouped)   // [meta, [differential results and models]]
         .join(ch_functional_grouped, remainder: true) // [meta, [functional results]]
-        .map { [it[0], it.tail().flatten().grep()] }  // [meta, [files]]   // note that grep() would remove null files from join with remainder true
+        .map { tuple ->
+            // Only flatten one level to avoid exploding java.nio.Path objects into path segments
+            def files = tuple.tail().collectMany { v -> (v instanceof List) ? v : [v] }.findAll { it != null }
+            [tuple[0], files]
+        }  // [meta, [files]]
         .map { meta, files -> [meta, files[0], files.tail()] }   // [meta, report_file, [files]]
         .flatMap { meta, report_file, files ->
             // Split comma-separated report files and create separate entries for each
