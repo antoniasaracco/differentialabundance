@@ -889,44 +889,81 @@ workflow DIFFERENTIALABUNDANCE {
 
     ch_report_input = ch_report_files    // [meta, [report_file, logo_file, css_file, citations_file]]
         .combine(ch_collated_versions)   // [meta, [report_files], versions]
-        .join(ch_all_matrices)           // [meta, [report_files], versions, samplesheet, features, [matrices]]
-        .join(ch_filter_tests)           // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests]
-        .join(ch_filter_thresholds)      // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds]
-        .join(ch_contrasts_sorted)       // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts]
-        .join(ch_differential_grouped)   // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential]]
+        .join(ch_all_matrices, remainder: true)           // [meta, [report_files], versions, samplesheet, features, [matrices]]
+        .join(ch_filter_tests, remainder: true)           // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests]
+        .join(ch_filter_thresholds, remainder: true)      // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds]
+        .join(ch_contrasts_sorted, remainder: true)       // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts]
+        .join(ch_differential_grouped, remainder: true)   // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential]]
         .join(ch_functional_grouped, remainder: true) // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential], [functional]]
         .map { tuple ->
-            // Debug: print the tuple structure to understand what we're receiving
-            log.info "DEBUG: Tuple size=${tuple.size()}, tuple[0]=${tuple[0]?.id}, tuple[1]=${tuple[1]?.getClass()?.simpleName}"
-            
-            // Manually concatenate to preserve order instead of using flatten
-            // Expected: tuple = [meta, [report,logo,css,citations], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential], [functional]]
+            // After joins with remainder: true, missing values will be null
+            // Reconstruct tuple with proper defaults for missing data
             def meta = tuple[0]
-            def report_files = tuple[1]  // list of 4 items: [report_str, logo, css, citations]
+            def report_files = (tuple.size() > 1 && tuple[1] != null) ? tuple[1] : []
+            def versions = (tuple.size() > 2 && tuple[2] != null) ? tuple[2] : null
+            def matrices = (tuple.size() > 3 && tuple[3] != null) ? tuple[3] : []
+            def samplesheet = (tuple.size() > 4 && tuple[4] != null) ? tuple[4] : null
+            def features = (tuple.size() > 5 && tuple[5] != null) ? tuple[5] : null
+            def filter_tests = (tuple.size() > 6 && tuple[6] != null) ? tuple[6] : null
+            def filter_thresholds = (tuple.size() > 7 && tuple[7] != null) ? tuple[7] : null
+            def contrasts = (tuple.size() > 8 && tuple[8] != null) ? tuple[8] : null
+            def differential = (tuple.size() > 9 && tuple[9] != null) ? tuple[9] : []
+            def functional = (tuple.size() > 10 && tuple[10] != null) ? tuple[10] : []
             
-            // Build the final files list in the correct order
-            def all_files = []
+            // Return properly structured tuple
+            return [meta, report_files, versions, samplesheet, features, matrices, 
+                    filter_tests, filter_thresholds, contrasts, differential, functional]
+        }
+        .map { meta, report_files, versions, samplesheet, features, matrices, filter_tests, filter_thresholds, contrasts, differential, functional ->
+
+            // Collect all report inputs
+            def all_reports = []
             
-            // Handle null report_files safely
-            if (report_files != null) {
-                if (report_files instanceof List) {
-                    all_files.addAll(report_files.findAll { it != null })
-                } else {
-                    all_files.add(report_files)
-                }
+            // Add report_files (should be a list)
+            if (report_files && report_files instanceof List) {
+                all_reports.addAll(report_files.findAll { it != null })
+            } else if (report_files) {
+                all_reports.add(report_files)
             }
             
-            // Add remaining items from the tuple (starting from index 2)
-            for (int i = 2; i < tuple.size(); i++) {
-                def v = tuple[i]
-                if (v instanceof List) {
-                    all_files.addAll(v.findAll { it != null })
-                } else if (v != null) {
-                    all_files.add(v)
-                }
+            // Add versions
+            if (versions) all_reports.add(versions)
+            
+            // Add samplesheet
+            if (samplesheet) all_reports.add(samplesheet)
+            
+            // Add features
+            if (features) all_reports.add(features)
+            
+            // Add matrices (should be a list)
+            if (matrices && matrices instanceof List) {
+                all_reports.addAll(matrices.findAll { it != null })
+            } else if (matrices) {
+                all_reports.add(matrices)
             }
             
-            [meta, all_files]
+            // Add filter files
+            if (filter_tests) all_reports.add(filter_tests)
+            if (filter_thresholds) all_reports.add(filter_thresholds)
+            
+            // Add contrasts
+            if (contrasts) all_reports.add(contrasts)
+            
+            // Add differential results (should be a list)
+            if (differential && differential instanceof List) {
+                all_reports.addAll(differential.findAll { it != null })
+            } else if (differential) {
+                all_reports.add(differential)
+            }
+            
+            // Add functional results (should be a list)
+            if (functional && functional instanceof List) {
+                all_reports.addAll(functional.findAll { it != null })
+            } else if (functional) {
+                all_reports.add(functional)
+            }
+
+            return [meta, all_reports]
         }  // [meta, [files]]
         .map { meta, files -> [meta, files[0], files.tail()] }   // [meta, report_file, [files]]
         .flatMap { meta, report_file, files ->
