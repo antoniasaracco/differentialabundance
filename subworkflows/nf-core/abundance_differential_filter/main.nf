@@ -252,7 +252,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
             }
             filter_input: [meta + [params: updated_params] + filter_meta, results]
             fc_input: [
-                method_specific.differential_.fc_column,
+                method_specific.differential_fc_column,
                 filter_meta.fc_threshold,
                 method_specific.fc_cardinality
             ]
