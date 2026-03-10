@@ -873,7 +873,7 @@ workflow DIFFERENTIALABUNDANCE {
         .join(ch_differential_model, by:[0,1])
         .groupTuple()                                 // [ meta, [meta with contrast], [differential results], [differential model] ]
         .map { tuple ->
-            def files = tuple.tail().tail().collectMany { v -> (v instanceof List) ? v : [v] }
+            def files = tuple.tail().flatten().findAll { it != null }
             [tuple[0], files]
         }  // [ meta, [differential results and models] ]
 
