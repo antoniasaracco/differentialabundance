@@ -896,14 +896,25 @@ workflow DIFFERENTIALABUNDANCE {
         .join(ch_differential_grouped)   // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential]]
         .join(ch_functional_grouped, remainder: true) // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential], [functional]]
         .map { tuple ->
+            // Debug: print the tuple structure to understand what we're receiving
+            log.info "DEBUG: Tuple size=${tuple.size()}, tuple[0]=${tuple[0]?.id}, tuple[1]=${tuple[1]?.getClass()?.simpleName}"
+            
             // Manually concatenate to preserve order instead of using flatten
-            // tuple = [meta, [report,logo,css,citations], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential], [functional]]
+            // Expected: tuple = [meta, [report,logo,css,citations], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential], [functional]]
             def meta = tuple[0]
             def report_files = tuple[1]  // list of 4 items: [report_str, logo, css, citations]
             
             // Build the final files list in the correct order
             def all_files = []
-            all_files.addAll(report_files)  // Add the 4 report-related files first
+            
+            // Handle null report_files safely
+            if (report_files != null) {
+                if (report_files instanceof List) {
+                    all_files.addAll(report_files.findAll { it != null })
+                } else {
+                    all_files.add(report_files)
+                }
+            }
             
             // Add remaining items from the tuple (starting from index 2)
             for (int i = 2; i < tuple.size(); i++) {
