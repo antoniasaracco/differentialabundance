@@ -857,12 +857,12 @@ workflow DIFFERENTIALABUNDANCE {
 
     ch_report_files = ch_paramsets
         .map { meta ->
-            [ meta, [
+            [ meta,
                 meta.params.report_file,  // can be a string of multiple files, gets split later
                 file(meta.params.logo_file, checkIfExists: true),
                 file(meta.params.css_file, checkIfExists: true),
                 file(meta.params.citations_file, checkIfExists: true)
-            ]]
+            ]
         }
 
     // Group differential and functional results by paramset meta [id: study_name, paramset_name: paramset_name, params: paramset]
@@ -872,16 +872,22 @@ workflow DIFFERENTIALABUNDANCE {
     ch_differential_grouped = differential_with_contrast.differential_results.transpose()
         .join(ch_differential_model, by:[0,1])
         .groupTuple()                                 // [ meta, [meta with contrast], [differential results], [differential model] ]
-        .map { [it[0], it.tail().tail().flatten()] }  // [ meta, [differential results and models] ]
+        .map { tuple ->
+            def files = tuple.tail().tail().collectMany { v -> (v instanceof List) ? v : [v] }
+            [tuple[0], files]
+        }  // [ meta, [differential results and models] ]
 
     ch_functional_grouped = ch_functional_results
         .groupTuple()                                 // [ meta, [meta with contrast], [functional results] ]
-        .map { [it[0], it.tail().tail().flatten()] }  // [ meta, [functional results] ]
+        .map { tuple ->
+            def files = tuple.tail().tail().collectMany { v -> (v instanceof List) ? v : [v] }
+            [tuple[0], files]
+        }  // [ meta, [functional results] ]
 
     // Prepare input for report generation
     // Each paramset will generate one markdown report by gathering all the files created with the same paramset
 
-    ch_report_input = ch_report_files    // [meta, [report_file, logo_file, css_file, citations_file]]
+    ch_report_input = ch_report_files    // [meta, report_file, logo_file, css_file, citations_file]
         .combine(ch_collated_versions)   // [versions file]
         .join(ch_all_matrices)           // [meta, samplesheet, features, [matrices]]
         .join(ch_filter_tests)           // [meta, filtering tests]
@@ -889,9 +895,14 @@ workflow DIFFERENTIALABUNDANCE {
         .join(ch_contrasts_sorted)       // [meta, contrast file]
         .join(ch_differential_grouped)   // [meta, [differential results and models]]
         .join(ch_functional_grouped, remainder: true) // [meta, [functional results]]
-        .map { [it[0], it.tail().flatten().grep()] }  // [meta, [files]]   // note that grep() would remove null files from join with remainder true
-        .map { meta, files -> [meta, files[0], files.tail()] }   // [meta, report_file, [files]]
-        .flatMap { meta, report_file, files ->
+        .flatMap { meta, _report_file, logo, css, citations, versions_file, observations, features, matrices, filtering_tests, filtering_thresholds, contrasts_file, differential_files, functional_files ->
+            def files = [logo, css, citations, versions_file, observations, features] +
+                (matrices ?: []) +
+                [filtering_tests, filtering_thresholds, contrasts_file] +
+                (differential_files ?: []) +
+                (functional_files ?: [])
+            files = files.findAll { it != null }
+
             // Split comma-separated report files and create separate entries for each
             meta.params.report_file.split(',').collect { report_path ->
                 def report_file_obj = file(report_path.trim(), checkIfExists: true)
