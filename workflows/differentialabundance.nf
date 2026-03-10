@@ -896,9 +896,14 @@ workflow DIFFERENTIALABUNDANCE {
         .join(ch_differential_grouped)   // [meta, [differential results and models]]
         .join(ch_functional_grouped, remainder: true) // [meta, [functional results]]
         .map { tuple ->
-            // Only flatten one level to avoid exploding java.nio.Path objects into path segments
-            def files = tuple.tail().collectMany { v -> (v instanceof List) ? v : [v] }.findAll { it != null }
-            [tuple[0], files]
+            // Manually concatenate to preserve order instead of using flatten
+            // tuple = [meta, [report,logo,css,citations], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential], [functional]]
+            def meta = tuple[0]
+            def report_files = tuple[1]  // list of 4 items
+            def files = report_files + tuple[2..-1].collectMany { v -> 
+                (v instanceof List) ? v : [v] 
+            }.findAll { it != null }
+            [meta, files]
         }  // [meta, [files]]
         .map { meta, files -> [meta, files[0], files.tail()] }   // [meta, report_file, [files]]
         .flatMap { meta, report_file, files ->
