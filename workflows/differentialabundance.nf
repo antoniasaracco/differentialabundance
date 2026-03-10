@@ -888,22 +888,34 @@ workflow DIFFERENTIALABUNDANCE {
     // Each paramset will generate one markdown report by gathering all the files created with the same paramset
 
     ch_report_input = ch_report_files    // [meta, [report_file, logo_file, css_file, citations_file]]
-        .combine(ch_collated_versions)   // [versions file]
-        .join(ch_all_matrices)           // [meta, samplesheet, features, [matrices]]
-        .join(ch_filter_tests)           // [meta, filtering tests]
-        .join(ch_filter_thresholds)      // [meta, filtering thresholds]
-        .join(ch_contrasts_sorted)       // [meta, contrast file]
-        .join(ch_differential_grouped)   // [meta, [differential results and models]]
-        .join(ch_functional_grouped, remainder: true) // [meta, [functional results]]
+        .combine(ch_collated_versions)   // [meta, [report_files], versions]
+        .join(ch_all_matrices)           // [meta, [report_files], versions, samplesheet, features, [matrices]]
+        .join(ch_filter_tests)           // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests]
+        .join(ch_filter_thresholds)      // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds]
+        .join(ch_contrasts_sorted)       // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts]
+        .join(ch_differential_grouped)   // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential]]
+        .join(ch_functional_grouped, remainder: true) // [meta, [report_files], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential], [functional]]
         .map { tuple ->
             // Manually concatenate to preserve order instead of using flatten
             // tuple = [meta, [report,logo,css,citations], versions, samplesheet, features, [matrices], filter_tests, filter_thresholds, contrasts, [differential], [functional]]
             def meta = tuple[0]
-            def report_files = tuple[1]  // list of 4 items
-            def files = report_files + tuple[2..-1].collectMany { v -> 
-                (v instanceof List) ? v : [v] 
-            }.findAll { it != null }
-            [meta, files]
+            def report_files = tuple[1]  // list of 4 items: [report_str, logo, css, citations]
+            
+            // Build the final files list in the correct order
+            def all_files = []
+            all_files.addAll(report_files)  // Add the 4 report-related files first
+            
+            // Add remaining items from the tuple (starting from index 2)
+            for (int i = 2; i < tuple.size(); i++) {
+                def v = tuple[i]
+                if (v instanceof List) {
+                    all_files.addAll(v.findAll { it != null })
+                } else if (v != null) {
+                    all_files.add(v)
+                }
+            }
+            
+            [meta, all_files]
         }  // [meta, [files]]
         .map { meta, files -> [meta, files[0], files.tail()] }   // [meta, report_file, [files]]
         .flatMap { meta, report_file, files ->
