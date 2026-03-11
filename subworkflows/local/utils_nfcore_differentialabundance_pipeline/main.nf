@@ -612,5 +612,20 @@ def getRelevantParams(paramset, category) {
         }
     }
 
+    // Internal runtime metadata needed downstream but intentionally not exposed
+    // as user-facing schema parameters.
+    def internalRuntimeParams = [
+        'differential_fc_column',
+        'differential_pval_column',
+        'differential_qval_column',
+        'differential_foldchanges_logged'
+    ]
+
+    internalRuntimeParams.each { paramName ->
+        if (paramset.containsKey(paramName)) {
+            relevantParams[paramName] = paramset[paramName]
+        }
+    }
+
     return relevantParams
 }
