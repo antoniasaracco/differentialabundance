@@ -551,13 +551,13 @@ def prepareModuleOutput(channel, paramsets, List meta_keys_to_remove = null, Boo
             // Replace output meta simplified params by full params from paramset.
             // Keep module-specific metadata added downstream in `meta_out.params`.
             def out_params = meta_out.params ?: [:]
-            def meta = meta_cleaned + [params: meta_paramset.params + out_params]
+            def merged_params = meta_paramset.params + out_params
+            def meta = meta_cleaned + [params: merged_params]
 
             if (use_meta_key) {
-                // Define a key using the basic meta structure: only containing id, paramset_name and params, when asked.
-                // Note that all the channels in the pipeline have study_name as id, except those containing contrast info.
-                // Hence, we need to use the study_name as id in the key.
-                def key = [id: meta.params.study_name, paramset_name: meta.paramset_name, params: meta.params]
+                // Define a stable key using only base paramset params.
+                // NOTE: module-specific metadata in `out_params` can vary per channel and should not affect join keys.
+                def key = [id: meta_paramset.params.study_name, paramset_name: meta.paramset_name, params: meta_paramset.params]
                 [key, meta] + it[3..-1] // [key, meta with full paramset, files ...]
             } else {
                 [meta] + it[3..-1]      // [meta with full paramset, files ...]
