@@ -33,6 +33,59 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     ch_versions = Channel.empty()
 
+    def method_params = [
+        'deseq2': [
+            differential_fc_column: 'log2FoldChange',
+            differential_pval_column: 'pvalue',
+            differential_qval_column: 'padj',
+            differential_foldchanges_logged: true,
+            fc_cardinality: '>=',
+            stat_cardinality: '<='
+        ],
+        'limma' : [
+            differential_fc_column: 'logFC',
+            differential_pval_column: 'P.Value',
+            differential_qval_column: 'adj.P.Val',
+            differential_foldchanges_logged: true,
+            fc_cardinality: '>=',
+            stat_cardinality: '<='
+        ],
+        'propd' : [
+            differential_fc_column: 'LFC',
+            differential_pval_column: 'significant',
+            differential_qval_column: 'significant',
+            differential_foldchanges_logged: true,
+            fc_cardinality: '>=',
+            stat_cardinality: '<='
+        ],
+        // allow legacy naming variants
+        'propr' : [
+            differential_fc_column: 'LFC',
+            differential_pval_column: 'significant',
+            differential_qval_column: 'significant',
+            differential_foldchanges_logged: true,
+            fc_cardinality: '>=',
+            stat_cardinality: '<='
+        ],
+        'dream' : [
+            differential_fc_column: 'logFC',
+            differential_pval_column: 'P.Value',
+            differential_qval_column: 'adj.P.Val',
+            differential_foldchanges_logged: true,
+            fc_cardinality: '>=',
+            stat_cardinality: '<='
+        ]
+    ]
+
+    def methodParam = { meta ->
+        def method = meta.differential_method
+        def method_specific = method_params[method]
+        if (!method_specific) {
+            error("Unsupported differential method '${method}' in ABUNDANCE_DIFFERENTIAL_FILTER. Supported methods: ${method_params.keySet().sort().join(', ')}. Meta: ${meta}")
+        }
+        return method_specific
+    }
+
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta, abundance, analysis_method, fc_threshold, stat_threshold, samplesheet, transcript_length, control_features, meta_contrast, variable, reference, target, formula, comparison ->
         def meta_with_method = meta + [ 'differential_method': analysis_method ]
@@ -178,10 +231,19 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // Collect results
     // ----------------------------------------------------
 
-    ch_results = DESEQ2_DIFFERENTIAL.out.results
+    ch_results_raw = DESEQ2_DIFFERENTIAL.out.results
         .mix(LIMMA_DIFFERENTIAL.out.results)
         .mix(PROPR_PROPD.out.results_genewise)
         .mix(VARIANCEPARTITION_DREAM.out.results)
+
+    ch_results = ch_results_raw
+        .map { meta, results ->
+            def method_specific = methodParam(meta)
+            def updated_params = (meta.params ?: [:]) + method_specific.findAll { k, _ ->
+                k in ['differential_fc_column', 'differential_pval_column', 'differential_qval_column', 'differential_foldchanges_logged']
+            }
+            [meta + [params: updated_params], results]
+        }
 
     ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
         .mix(LIMMA_NORM.out.normalised_counts)
@@ -199,37 +261,23 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // Filter DE results
     // ----------------------------------------------------
 
-    ch_diff_filter_params = ch_results
+    ch_diff_filter_params = ch_results_raw
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
-            def method_params = [
-                'deseq2': [
-                    fc_column: 'log2FoldChange', fc_cardinality: '>=',
-                    stat_column: 'padj', stat_cardinality: '<='
-                ],
-                'limma' : [
-                    fc_column: 'logFC', fc_cardinality: '>=',
-                    stat_column: 'adj.P.Val', stat_cardinality: '<='
-                ],
-                'propd' : [
-                    fc_column: 'LFC', fc_cardinality: '>=',
-                    stat_column: 'significant', stat_cardinality: '<='
-                ],
-                'dream' : [
-                    fc_column: 'logFC', fc_cardinality: '>=',
-                    stat_column: 'adj.P.Val', stat_cardinality: '<='
-                ]
-            ]
-            filter_input: [meta + filter_meta, results]
+            def method_specific = methodParam(meta)
+            def updated_params = (meta.params ?: [:]) + method_specific.findAll { k, _ ->
+                k in ['differential_fc_column', 'differential_pval_column', 'differential_qval_column', 'differential_foldchanges_logged']
+            }
+            filter_input: [meta + [params: updated_params] + filter_meta, results]
             fc_input: [
-                method_params[meta.differential_method].fc_column,
+                method_specific.differential_fc_column,
                 filter_meta.fc_threshold,
-                method_params[meta.differential_method].fc_cardinality
+                method_specific.fc_cardinality
             ]
             stat_input: [
-                method_params[meta.differential_method].stat_column,
+                method_specific.differential_qval_column,
                 filter_meta.stat_threshold,
-                method_params[meta.differential_method].stat_cardinality
+                method_specific.stat_cardinality
             ]
         }
 
