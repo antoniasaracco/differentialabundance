@@ -548,8 +548,11 @@ def prepareModuleOutput(channel, paramsets, List meta_keys_to_remove = null, Boo
             def meta_out = it[2]
             // Remove unnecessary keys from meta, when asked
             def meta_cleaned = (meta_keys_to_remove) ? meta_out.findAll{ k,v -> !meta_keys_to_remove.contains(k) } : meta_out
-            // Replace output meta simplified params by full params from paramset
-            def meta = meta_cleaned + [params: meta_paramset.params]
+
+            // Replace output meta simplified params by full params from paramset.
+            // Keep module-specific metadata added downstream in `meta_out.params`.
+            def out_params = meta_out.params ?: [:]
+            def meta = meta_cleaned + [params: meta_paramset.params + out_params]
 
             if (use_meta_key) {
                 // Define a key using the basic meta structure: only containing id, paramset_name and params, when asked.
