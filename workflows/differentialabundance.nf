@@ -517,10 +517,14 @@ workflow DIFFERENTIALABUNDANCE {
     // Prepare input for annotation - combine differential results with feature metadata
     ch_annotation_input = ch_differential_results
         .filter { tuple ->
-            def meta = tuple[0]
+            def meta = tuple[1]
             def study_type = meta?.params?.study_type
             return study_type == 'rnaseq' || study_type == 'affy_array'
-        }
+        }   
+        .map { key, meta, results ->
+        // ✅ NEW: Transform to [meta, key, results] so we can join by meta
+        [meta, key, results]
+    }
 
     ch_annotation_input
         .combine(ch_validated_featuremeta, by: 0) // Join by meta_key (first element)
