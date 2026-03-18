@@ -554,15 +554,20 @@ def prepareModuleOutput(channel, paramsets, List meta_keys_to_remove = null, Boo
             def out_params = meta_out.params ?: [:]
             def meta = meta_cleaned + [params: meta_paramset.params + out_params]
 
-            if (use_meta_key) {
-                // Define a key using the basic meta structure: only containing id, paramset_name and params, when asked.
-                // Note that all the channels in the pipeline have study_name as id, except those containing contrast info.
-                // Hence, we need to use the study_name as id in the key.
-                def key = [id: meta.params.study_name, paramset_name: meta.paramset_name, params: meta.params]
-                [key, meta] + it[3..-1] // [key, meta with full paramset, files ...]
-            } else {
-                [meta] + it[3..-1]      // [meta with full paramset, files ...]
+        if (use_meta_key) {
+            // Define a key using the basic meta structure: only containing id, paramset_name and params, when asked.
+            // Note that all the channels in the pipeline have study_name as id, except those containing contrast info.
+            // Hence, we need to use the study_name as id in the key.
+            // Exclude method-specific injected params (differential column names) from the key to ensure
+            // consistent join keys across different differential methods within the same paramset.
+            def params_for_key = meta.params.findAll { k, v ->
+                k !in ['differential_fc_column', 'differential_pval_column', 'differential_qval_column', 'differential_foldchanges_logged']
             }
+            def key = [id: meta.params.study_name, paramset_name: meta.paramset_name, params: params_for_key]
+            [key, meta] + it[3..-1] // [key, meta with full paramset, files ...]
+        } else {
+            [meta] + it[3..-1]      // [meta with full paramset, files ...]
+        }
         }
 }
 
