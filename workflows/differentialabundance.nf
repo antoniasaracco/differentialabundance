@@ -516,22 +516,32 @@ workflow DIFFERENTIALABUNDANCE {
     // ========================================================================
     // Prepare input for annotation - combine differential results with feature metadata
     ch_annotation_input = ch_differential_results
+        .view { tuple -> "DEBUG ch_differential_results: ${tuple.getClass().name} with ${tuple.size()} elements, study_type=${tuple.size() > 1 ? tuple[1]?.params?.study_type : 'N/A'}" }
         .filter { tuple ->
             def meta = tuple[1]
             def study_type = meta?.params?.study_type
-            return study_type == 'rnaseq' || study_type == 'affy_array'
+            def passes = study_type == 'rnaseq' || study_type == 'affy_array'
+            if (!passes) {
+                println "DEBUG FILTER REJECTED: study_type='${study_type}'"
+            }
+            return passes
         }   
+        .view { "DEBUG AFTER FILTER: ${it}" }
         .map { key, meta, results ->
         // ✅ NEW: Transform to [meta, key, results] so we can join by meta
         [meta, key, results]
     }
+        .view { "DEBUG AFTER MAP: ${it[0].class.name} | meta.params.study_type=${it[0]?.params?.study_type}" }
 
     ch_annotation_input
-        .combine(ch_validated_featuremeta, by: 0) // Join by meta_key (first element)
-        .map { meta_key, meta_with_contrast, results_file, features_file ->
-            // Return: [meta_with_contrast, [results_file, features_file]]
-            [meta_with_contrast, [results_file, features_file]]
+        .view { "DEBUG BEFORE COMBINE: ${it}" }
+        .combine(ch_validated_featuremeta, by: 0) // Join by meta (first element)
+        .view { "DEBUG AFTER COMBINE: ${it.size()} elements" }
+        .map { meta, key, results_file, features_file ->
+            // Return: [meta, [results_file, features_file]]
+            [meta, [results_file, features_file]]
         }
+        .view { "DEBUG FINAL INPUT TO CSVTK: ${it}" }
         .set { ch_final_annotation_input }
 
     CSVTK_JOIN(
