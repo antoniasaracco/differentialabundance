@@ -496,6 +496,16 @@ def prepareModuleInput(channel, category) {
         .map {
             // clean the params by keeping only the relevant params
             def simplifiedparams = getRelevantParams(it[0].params, category)
+            
+            // Preserve dynamically-added method-specific params (e.g., from differential methods)
+            // These are not in the schema but are needed by downstream processes
+            def dynamic_params = ['differential_fc_column', 'differential_pval_column', 'differential_qval_column', 'differential_foldchanges_logged']
+            dynamic_params.each { param ->
+                if (it[0].params.containsKey(param)) {
+                    simplifiedparams[param] = it[0].params[param]
+                }
+            }
+            
             // replace meta.params by simplified params
             def simplifiedmeta = it[0] + [params: simplifiedparams]
             // remove paramset_name from meta, and use as key
