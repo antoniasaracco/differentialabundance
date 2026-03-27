@@ -613,5 +613,18 @@ def getRelevantParams(paramset, category) {
         }
     }
 
+    // Preserve runtime-resolved differential columns added by the tool subworkflows,
+    // even though they are no longer user-facing schema parameters.
+    [
+        'differential_fc_column',
+        'differential_pval_column',
+        'differential_qval_column',
+        'differential_foldchanges_logged'
+    ].each { paramName ->
+        if (paramset.containsKey(paramName)) {
+            relevantParams[paramName] = paramset[paramName]
+        }
+    }
+
     return relevantParams
 }

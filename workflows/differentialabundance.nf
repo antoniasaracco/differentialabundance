@@ -705,6 +705,26 @@ workflow DIFFERENTIALABUNDANCE {
 
     // Create a channel with the differential results and the corresponding map with
     // the contrast entries
+    def differential_runtime_param_keys = [
+        'differential_fc_column',
+        'differential_pval_column',
+        'differential_qval_column',
+        'differential_foldchanges_logged'
+    ]
+
+    ch_differential_runtime_params = ch_differential_results
+        .transpose()
+        .map { meta, meta_with_contrast, _results ->
+            def runtime_params = meta_with_contrast.params.subMap(
+                differential_runtime_param_keys.findAll { meta_with_contrast.params.containsKey(it) }
+            )
+            [meta, runtime_params]
+        }
+        .groupTuple()
+        .map { meta, runtime_params ->
+            [meta, runtime_params[0]]
+        }
+
     differential_with_contrast = ch_paramsets
         .join( ch_differential_results
             .groupTuple()
@@ -773,12 +793,14 @@ workflow DIFFERENTIALABUNDANCE {
     ch_shinyngs_input = differential_with_contrast_shinyngs.differential_results
         .join(ch_contrasts_sorted_shinyngs)
         .join(ch_all_matrices)
+        .join(ch_differential_runtime_params)
         .filter { row ->
             row[0].params.shinyngs_build_app
         }
-        .multiMap { meta, meta_with_contrast, differential_results, contrast_file, samplesheet, features, matrices ->
-            matrices: [meta, samplesheet, features, matrices]
-            contrasts_and_differential: [meta, contrast_file, differential_results]
+        .multiMap { meta, meta_with_contrast, differential_results, contrast_file, samplesheet, features, matrices, differential_runtime_params ->
+            def meta_with_runtime_params = meta + [params: meta.params + differential_runtime_params]
+            matrices: [meta_with_runtime_params, samplesheet, features, matrices]
+            contrasts_and_differential: [meta_with_runtime_params, contrast_file, differential_results]
             contrast_stats_assay: meta.params.exploratory_assay_names.split(',').findIndexOf { it == meta.params.exploratory_final_assay } + 1
         }
 
@@ -867,7 +889,11 @@ workflow DIFFERENTIALABUNDANCE {
         .join(ch_contrasts_sorted)       // [meta, contrast file]
         .join(ch_differential_grouped)   // [meta, [differential results and models]]
         .join(ch_functional_grouped, remainder: true) // [meta, [functional results]]
-        .map { [it[0], it.tail().flatten().grep()] }  // [meta, [files]]   // note that grep() would remove null files from join with remainder true
+        .join(ch_differential_runtime_params)
+        .map { row ->
+            def meta = row[0] + [params: row[0].params + row[-1]]
+            [meta, row[1..-2].flatten().grep()]
+        }  // [meta, [files]]   // note that grep() would remove null files from join with remainder true
         .map { meta, files -> [meta, files[0], files.tail()] }   // [meta, report_file, [files]]
         .flatMap { meta, report_file, files ->
             // Split comma-separated report files and create separate entries for each
