@@ -18,55 +18,59 @@ def mergeMaps(meta, meta2){
     }
 }
 
-def differentialMethodParams = [
-    'deseq2': [
-        differential_fc_column         : 'log2FoldChange',
-        differential_pval_column       : 'pvalue',
-        differential_qval_column       : 'padj',
-        differential_foldchanges_logged: true,
-        fc_column                      : 'log2FoldChange',
-        fc_cardinality                 : '>=',
-        stat_column                    : 'padj',
-        stat_cardinality               : '<='
-    ],
-    'limma' : [
-        differential_fc_column         : 'logFC',
-        differential_pval_column       : 'P.Value',
-        differential_qval_column       : 'adj.P.Val',
-        differential_foldchanges_logged: true,
-        fc_column                      : 'logFC',
-        fc_cardinality                 : '>=',
-        stat_column                    : 'adj.P.Val',
-        stat_cardinality               : '<='
-    ],
-    'propd' : [
-        differential_fc_column         : 'LFC',
-        differential_pval_column       : 'rcDdis',
-        differential_qval_column       : 'rcDdis',
-        differential_foldchanges_logged: true,
-        fc_column                      : 'LFC',
-        fc_cardinality                 : '>=',
-        stat_column                    : 'significant',
-        stat_cardinality               : '<='
-    ],
-    'dream' : [
-        differential_fc_column         : 'logFC',
-        differential_pval_column       : 'P.Value',
-        differential_qval_column       : 'adj.P.Val',
-        differential_foldchanges_logged: true,
-        fc_column                      : 'logFC',
-        fc_cardinality                 : '>=',
-        stat_column                    : 'adj.P.Val',
-        stat_cardinality               : '<='
-    ]
-]
+def getDifferentialMethodParams(differential_method) {
+    def method_params = [
+        'deseq2': [
+            differential_fc_column         : 'log2FoldChange',
+            differential_pval_column       : 'pvalue',
+            differential_qval_column       : 'padj',
+            differential_foldchanges_logged: true,
+            fc_column                      : 'log2FoldChange',
+            fc_cardinality                 : '>=',
+            stat_column                    : 'padj',
+            stat_cardinality               : '<='
+        ],
+        'limma' : [
+            differential_fc_column         : 'logFC',
+            differential_pval_column       : 'P.Value',
+            differential_qval_column       : 'adj.P.Val',
+            differential_foldchanges_logged: true,
+            fc_column                      : 'logFC',
+            fc_cardinality                 : '>=',
+            stat_column                    : 'adj.P.Val',
+            stat_cardinality               : '<='
+        ],
+        'propd' : [
+            differential_fc_column         : 'LFC',
+            differential_pval_column       : 'rcDdis',
+            differential_qval_column       : 'rcDdis',
+            differential_foldchanges_logged: true,
+            fc_column                      : 'LFC',
+            fc_cardinality                 : '>=',
+            stat_column                    : 'significant',
+            stat_cardinality               : '<='
+        ],
+        'dream' : [
+            differential_fc_column         : 'logFC',
+            differential_pval_column       : 'P.Value',
+            differential_qval_column       : 'adj.P.Val',
+            differential_foldchanges_logged: true,
+            fc_column                      : 'logFC',
+            fc_cardinality                 : '>=',
+            stat_column                    : 'adj.P.Val',
+            stat_cardinality               : '<='
+        ]
+    ][differential_method]
 
-def addDifferentialRuntimeParams(meta) {
-    def method_params = differentialMethodParams[meta.differential_method]
     if (!method_params) {
-        throw new IllegalArgumentException("Unsupported differential method: ${meta.differential_method}")
+        throw new IllegalArgumentException("Unsupported differential method: ${differential_method}")
     }
 
+    method_params
+}
+
+def addDifferentialRuntimeParams(meta) {
+    def method_params = getDifferentialMethodParams(meta.differential_method)
     def runtime_params = method_params.subMap([
         'differential_fc_column',
         'differential_pval_column',
@@ -271,7 +275,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_diff_filter_params = ch_results
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
-            def method_params = differentialMethodParams[meta.differential_method]
+            def method_params = getDifferentialMethodParams(meta.differential_method)
             filter_input: [meta + filter_meta, results]
             fc_input: [
                 method_params.fc_column,
