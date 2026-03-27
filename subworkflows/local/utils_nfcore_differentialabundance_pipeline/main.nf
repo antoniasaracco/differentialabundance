@@ -584,7 +584,9 @@ def getRelevantParams(paramset, category) {
         'preprocessing': ['base', 'preprocessing'],
         'exploratory': ['base', 'preprocessing', 'exploratory'],
         'differential': ['base', 'preprocessing', 'differential'],
-        'functional': ['base', 'preprocessing', 'differential', 'functional']
+        'functional': ['base', 'preprocessing', 'differential', 'functional'],
+        'shiny': ['base', 'preprocessing', 'exploratory', 'differential', 'shiny'],
+        'report': ['base', 'preprocessing', 'exploratory', 'differential', 'functional', 'report']
     ]
     if (!relevant_categories.containsKey(category)) {
         error("Category '${category}' not found in schema.")

@@ -798,7 +798,7 @@ workflow DIFFERENTIALABUNDANCE {
             row[0].params.shinyngs_build_app
         }
         .multiMap { meta, meta_with_contrast, differential_results, contrast_file, samplesheet, features, matrices, differential_runtime_params ->
-            def meta_with_runtime_params = meta + [params: meta.params + differential_runtime_params]
+            def meta_with_runtime_params = meta + [params: getRelevantParams(meta.params + differential_runtime_params, 'shiny')]
             matrices: [meta_with_runtime_params, samplesheet, features, matrices]
             contrasts_and_differential: [meta_with_runtime_params, contrast_file, differential_results]
             contrast_stats_assay: meta.params.exploratory_assay_names.split(',').findIndexOf { it == meta.params.exploratory_final_assay } + 1
@@ -891,7 +891,7 @@ workflow DIFFERENTIALABUNDANCE {
         .join(ch_functional_grouped, remainder: true) // [meta, [functional results]]
         .join(ch_differential_runtime_params)
         .map { row ->
-            def meta = row[0] + [params: row[0].params + row[-1]]
+            def meta = row[0] + [params: getRelevantParams(row[0].params + row[-1], 'report')]
             [meta, row[1..-2].flatten().grep()]
         }  // [meta, [files]]   // note that grep() would remove null files from join with remainder true
         .map { meta, files -> [meta, files[0], files.tail()] }   // [meta, report_file, [files]]
