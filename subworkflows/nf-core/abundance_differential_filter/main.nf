@@ -32,32 +32,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     main:
 
     ch_versions = Channel.empty()
-    def method_params = [
-        'deseq2': [
-            differential_fc_column: 'log2FoldChange',
-            fc_cardinality        : '>=',
-            stat_column           : 'padj',
-            stat_cardinality      : '<='
-        ],
-        'limma' : [
-            differential_fc_column: 'logFC',
-            fc_cardinality        : '>=',
-            stat_column           : 'adj.P.Val',
-            stat_cardinality      : '<='
-        ],
-        'propd' : [
-            differential_fc_column: 'LFC',
-            fc_cardinality        : '>=',
-            stat_column           : 'significant',
-            stat_cardinality      : '<='
-        ],
-        'dream' : [
-            differential_fc_column: 'logFC',
-            fc_cardinality        : '>=',
-            stat_column           : 'adj.P.Val',
-            stat_cardinality      : '<='
-        ]
-    ]
 
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta, abundance, analysis_method, fc_threshold, stat_threshold, samplesheet, transcript_length, control_features, meta_contrast, variable, reference, target, formula, comparison ->
@@ -332,17 +306,34 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_diff_filter_params = ch_results
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
-            def method_specific_params = method_params[meta.differential_method]
+            def method_params = [
+                'deseq2': [
+                    fc_column: 'log2FoldChange', fc_cardinality: '>=',
+                    stat_column: 'padj', stat_cardinality: '<='
+                ],
+                'limma' : [
+                    fc_column: 'logFC', fc_cardinality: '>=',
+                    stat_column: 'adj.P.Val', stat_cardinality: '<='
+                ],
+                'propd' : [
+                    fc_column: 'LFC', fc_cardinality: '>=',
+                    stat_column: 'significant', stat_cardinality: '<='
+                ],
+                'dream' : [
+                    fc_column: 'logFC', fc_cardinality: '>=',
+                    stat_column: 'adj.P.Val', stat_cardinality: '<='
+                ]
+            ]
             filter_input: [meta + filter_meta, results]
             fc_input: [
-                method_specific_params.differential_fc_column,
+                method_params[meta.differential_method].fc_column,
                 filter_meta.fc_threshold,
-                method_specific_params.fc_cardinality
+                method_params[meta.differential_method].fc_cardinality
             ]
             stat_input: [
-                method_specific_params.stat_column,
+                method_params[meta.differential_method].stat_column,
                 filter_meta.stat_threshold,
-                method_specific_params.stat_cardinality
+                method_params[meta.differential_method].stat_cardinality
             ]
         }
 
