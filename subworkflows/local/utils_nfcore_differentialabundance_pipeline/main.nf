@@ -548,10 +548,11 @@ def prepareModuleOutput(channel, paramsets, List meta_keys_to_remove = null, Boo
             def meta_out = it[2]
             // Remove unnecessary keys from meta, when asked
             def meta_cleaned = (meta_keys_to_remove) ? meta_out.findAll{ k,v -> !meta_keys_to_remove.contains(k) } : meta_out
-            // Preserve runtime-resolved params added by subworkflows while restoring
-            // the full paramset for downstream consumers.
-            def merged_params = meta_paramset.params + (meta_cleaned.params ?: [:])
-            def meta = meta_cleaned + [params: merged_params]
+            // Preserve runtime-resolved params only on keyed outputs that need them,
+            // while keeping the unkeyed meta shape unchanged for existing joins.
+            def meta = use_meta_key
+                ? meta_cleaned + [params: meta_paramset.params + (meta_cleaned.params ?: [:])]
+                : meta_cleaned + [params: meta_paramset.params]
 
             if (use_meta_key) {
                 // Define a key using the basic meta structure: only containing id, paramset_name and params, when asked.
