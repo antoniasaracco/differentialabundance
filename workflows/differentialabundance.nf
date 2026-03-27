@@ -6,6 +6,7 @@
 
 include { prepareModuleInput     } from '../subworkflows/local/utils_nfcore_differentialabundance_pipeline/main'
 include { prepareModuleOutput    } from '../subworkflows/local/utils_nfcore_differentialabundance_pipeline/main'
+include { getRelevantParams      } from '../subworkflows/local/utils_nfcore_differentialabundance_pipeline/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
