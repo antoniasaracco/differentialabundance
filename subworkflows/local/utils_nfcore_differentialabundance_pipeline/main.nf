@@ -548,14 +548,17 @@ def prepareModuleOutput(channel, paramsets, List meta_keys_to_remove = null, Boo
             def meta_out = it[2]
             // Remove unnecessary keys from meta, when asked
             def meta_cleaned = (meta_keys_to_remove) ? meta_out.findAll{ k,v -> !meta_keys_to_remove.contains(k) } : meta_out
-            // Replace output meta simplified params by full params from paramset
-            def meta = meta_cleaned + [params: meta_paramset.params]
+            // Preserve runtime-resolved params only on keyed outputs that need them,
+            // while keeping the unkeyed meta shape unchanged for existing joins.
+            def meta = use_meta_key
+                ? meta_cleaned + [params: meta_paramset.params + (meta_cleaned.params ?: [:])]
+                : meta_cleaned + [params: meta_paramset.params]
 
             if (use_meta_key) {
                 // Define a key using the basic meta structure: only containing id, paramset_name and params, when asked.
                 // Note that all the channels in the pipeline have study_name as id, except those containing contrast info.
                 // Hence, we need to use the study_name as id in the key.
-                def key = [id: meta.params.study_name, paramset_name: meta.paramset_name, params: meta.params]
+                def key = [id: meta_paramset.params.study_name, paramset_name: meta.paramset_name, params: meta_paramset.params]
                 [key, meta] + it[3..-1] // [key, meta with full paramset, files ...]
             } else {
                 [meta] + it[3..-1]      // [meta with full paramset, files ...]
@@ -581,7 +584,9 @@ def getRelevantParams(paramset, category) {
         'preprocessing': ['base', 'preprocessing'],
         'exploratory': ['base', 'preprocessing', 'exploratory'],
         'differential': ['base', 'preprocessing', 'differential'],
-        'functional': ['base', 'preprocessing', 'differential', 'functional']
+        'functional': ['base', 'preprocessing', 'differential', 'functional'],
+        'shiny': ['base', 'preprocessing', 'exploratory', 'differential', 'shiny'],
+        'report': ['base', 'preprocessing', 'exploratory', 'differential', 'functional', 'report']
     ]
     if (!relevant_categories.containsKey(category)) {
         error("Category '${category}' not found in schema.")
@@ -607,6 +612,19 @@ def getRelevantParams(paramset, category) {
                     }
                 }
             }
+        }
+    }
+
+    // Preserve runtime-resolved differential columns added by the tool subworkflows,
+    // even though they are no longer user-facing schema parameters.
+    [
+        'differential_fc_column',
+        'differential_pval_column',
+        'differential_qval_column',
+        'differential_foldchanges_logged'
+    ].each { paramName ->
+        if (paramset.containsKey(paramName)) {
+            relevantParams[paramName] = paramset[paramName]
         }
     }
 

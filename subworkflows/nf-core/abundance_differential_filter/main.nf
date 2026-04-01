@@ -18,6 +18,75 @@ def mergeMaps(meta, meta2){
     }
 }
 
+def getDifferentialMethodParams(differential_method) {
+    def method_params = [
+        'deseq2': [
+            differential_fc_column         : 'log2FoldChange',
+            differential_pval_column       : 'pvalue',
+            differential_qval_column       : 'padj',
+            differential_foldchanges_logged: true,
+            fc_column                      : 'log2FoldChange',
+            fc_cardinality                 : '>=',
+            stat_column                    : 'padj',
+            stat_cardinality               : '<='
+        ],
+        'limma' : [
+            differential_fc_column         : 'logFC',
+            differential_pval_column       : 'P.Value',
+            differential_qval_column       : 'adj.P.Val',
+            differential_foldchanges_logged: true,
+            fc_column                      : 'logFC',
+            fc_cardinality                 : '>=',
+            stat_column                    : 'adj.P.Val',
+            stat_cardinality               : '<='
+        ],
+        'propd' : [
+            differential_fc_column         : 'LFC',
+            differential_pval_column       : 'rcDdis',
+            differential_qval_column       : 'rcDdis',
+            differential_foldchanges_logged: true,
+            fc_column                      : 'LFC',
+            fc_cardinality                 : '>=',
+            stat_column                    : 'significant',
+            stat_cardinality               : '<='
+        ],
+        'dream' : [
+            differential_fc_column         : 'logFC',
+            differential_pval_column       : 'P.Value',
+            differential_qval_column       : 'adj.P.Val',
+            differential_foldchanges_logged: true,
+            fc_column                      : 'logFC',
+            fc_cardinality                 : '>=',
+            stat_column                    : 'adj.P.Val',
+            stat_cardinality               : '<='
+        ]
+    ][differential_method]
+
+    if (!method_params) {
+        throw new IllegalArgumentException("Unsupported differential method: ${differential_method}")
+    }
+
+    method_params
+}
+
+def addDifferentialRuntimeParams(meta) {
+    def method_params = getDifferentialMethodParams(meta.differential_method)
+    def runtime_params = method_params.subMap([
+        'differential_fc_column',
+        'differential_pval_column',
+        'differential_qval_column',
+        'differential_foldchanges_logged'
+    ])
+
+    meta + [params: meta.params + runtime_params]
+}
+
+def addDifferentialRuntimeParamsToChannel(channel) {
+    channel.map { meta, output ->
+        [addDifferentialRuntimeParams(meta), output]
+    }
+}
+
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
@@ -178,21 +247,25 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // Collect results
     // ----------------------------------------------------
 
-    ch_results = DESEQ2_DIFFERENTIAL.out.results
-        .mix(LIMMA_DIFFERENTIAL.out.results)
-        .mix(PROPR_PROPD.out.results_genewise)
-        .mix(VARIANCEPARTITION_DREAM.out.results)
+    ch_results = Channel.empty()
+        .mix(addDifferentialRuntimeParamsToChannel(DESEQ2_DIFFERENTIAL.out.results))
+        .mix(addDifferentialRuntimeParamsToChannel(LIMMA_DIFFERENTIAL.out.results))
+        .mix(addDifferentialRuntimeParamsToChannel(PROPR_PROPD.out.results_genewise))
+        .mix(addDifferentialRuntimeParamsToChannel(VARIANCEPARTITION_DREAM.out.results))
 
-    ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
-        .mix(LIMMA_NORM.out.normalised_counts)
-        .mix(DREAM_NORM.out.normalised_counts)
+    ch_normalised_matrix = Channel.empty()
+        .mix(addDifferentialRuntimeParamsToChannel(DESEQ2_NORM.out.normalised_counts))
+        .mix(addDifferentialRuntimeParamsToChannel(LIMMA_NORM.out.normalised_counts))
+        .mix(addDifferentialRuntimeParamsToChannel(DREAM_NORM.out.normalised_counts))
 
-    ch_model = DESEQ2_DIFFERENTIAL.out.model
-        .mix(LIMMA_DIFFERENTIAL.out.model)
-        .mix(VARIANCEPARTITION_DREAM.out.model)
+    ch_model = Channel.empty()
+        .mix(addDifferentialRuntimeParamsToChannel(DESEQ2_DIFFERENTIAL.out.model))
+        .mix(addDifferentialRuntimeParamsToChannel(LIMMA_DIFFERENTIAL.out.model))
+        .mix(addDifferentialRuntimeParamsToChannel(VARIANCEPARTITION_DREAM.out.model))
 
-    ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts
-        .mix(DESEQ2_NORM.out.vst_counts)
+    ch_variance_stabilised_matrix = Channel.empty()
+        .mix(addDifferentialRuntimeParamsToChannel(DESEQ2_NORM.out.rlog_counts))
+        .mix(addDifferentialRuntimeParamsToChannel(DESEQ2_NORM.out.vst_counts))
         .groupTuple()
 
     // ----------------------------------------------------
@@ -202,34 +275,17 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_diff_filter_params = ch_results
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
-            def method_params = [
-                'deseq2': [
-                    fc_column: 'log2FoldChange', fc_cardinality: '>=',
-                    stat_column: 'padj', stat_cardinality: '<='
-                ],
-                'limma' : [
-                    fc_column: 'logFC', fc_cardinality: '>=',
-                    stat_column: 'adj.P.Val', stat_cardinality: '<='
-                ],
-                'propd' : [
-                    fc_column: 'LFC', fc_cardinality: '>=',
-                    stat_column: 'significant', stat_cardinality: '<='
-                ],
-                'dream' : [
-                    fc_column: 'logFC', fc_cardinality: '>=',
-                    stat_column: 'adj.P.Val', stat_cardinality: '<='
-                ]
-            ]
+            def method_params = getDifferentialMethodParams(meta.differential_method)
             filter_input: [meta + filter_meta, results]
             fc_input: [
-                method_params[meta.differential_method].fc_column,
+                method_params.fc_column,
                 filter_meta.fc_threshold,
-                method_params[meta.differential_method].fc_cardinality
+                method_params.fc_cardinality
             ]
             stat_input: [
-                method_params[meta.differential_method].stat_column,
+                method_params.stat_column,
                 filter_meta.stat_threshold,
-                method_params[meta.differential_method].stat_cardinality
+                method_params.stat_cardinality
             ]
         }
 
