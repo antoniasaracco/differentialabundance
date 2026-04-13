@@ -97,6 +97,7 @@ workflow PIPELINE_INITIALISATION {
         ? getParamsheetConfigurations()
         : getDefaultConfigurations()
     paramsets = validateConfigurations(configurations)
+        .collect { paramset -> addDifferentialRuntimeParams(paramset) }
     ch_paramsets = Channel.fromList(paramsets)
         .map { paramset -> [
             id: paramset.study_name,
@@ -166,6 +167,45 @@ workflow PIPELINE_COMPLETION {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 //
+def getDifferentialMethodRuntimeParams(differential_method) {
+    def runtime_params = [
+        'deseq2': [
+            differential_fc_column         : 'log2FoldChange',
+            differential_pval_column       : 'pvalue',
+            differential_qval_column       : 'padj',
+            differential_foldchanges_logged: true
+        ],
+        'limma' : [
+            differential_fc_column         : 'logFC',
+            differential_pval_column       : 'P.Value',
+            differential_qval_column       : 'adj.P.Val',
+            differential_foldchanges_logged: true
+        ],
+        'propd' : [
+            differential_fc_column         : 'LFC',
+            differential_pval_column       : 'rcDdis',
+            differential_qval_column       : 'rcDdis',
+            differential_foldchanges_logged: true
+        ],
+        'dream' : [
+            differential_fc_column         : 'logFC',
+            differential_pval_column       : 'P.Value',
+            differential_qval_column       : 'adj.P.Val',
+            differential_foldchanges_logged: true
+        ]
+    ][differential_method]
+
+    runtime_params ?: [:]
+}
+
+def addDifferentialRuntimeParams(paramset) {
+    def runtime_params = getDifferentialMethodRuntimeParams(paramset.differential_method)
+    def missing_runtime_params = runtime_params.findAll { key, _value ->
+        !paramset.containsKey(key)
+    }
+    paramset + missing_runtime_params
+}
+
 // Check and validate pipeline parameters
 //
 def validateInputParameters(paramsets) {
@@ -548,17 +588,14 @@ def prepareModuleOutput(channel, paramsets, List meta_keys_to_remove = null, Boo
             def meta_out = it[2]
             // Remove unnecessary keys from meta, when asked
             def meta_cleaned = (meta_keys_to_remove) ? meta_out.findAll{ k,v -> !meta_keys_to_remove.contains(k) } : meta_out
-            // Preserve runtime-resolved params only on keyed outputs that need them,
-            // while keeping the unkeyed meta shape unchanged for existing joins.
-            def meta = use_meta_key
-                ? meta_cleaned + [params: meta_paramset.params + (meta_cleaned.params ?: [:])]
-                : meta_cleaned + [params: meta_paramset.params]
+            // Replace output meta simplified params by full params from paramset
+            def meta = meta_cleaned + [params: meta_paramset.params]
 
             if (use_meta_key) {
                 // Define a key using the basic meta structure: only containing id, paramset_name and params, when asked.
                 // Note that all the channels in the pipeline have study_name as id, except those containing contrast info.
                 // Hence, we need to use the study_name as id in the key.
-                def key = [id: meta_paramset.params.study_name, paramset_name: meta.paramset_name, params: meta_paramset.params]
+                def key = [id: meta.params.study_name, paramset_name: meta.paramset_name, params: meta.params]
                 [key, meta] + it[3..-1] // [key, meta with full paramset, files ...]
             } else {
                 [meta] + it[3..-1]      // [meta with full paramset, files ...]
@@ -584,9 +621,7 @@ def getRelevantParams(paramset, category) {
         'preprocessing': ['base', 'preprocessing'],
         'exploratory': ['base', 'preprocessing', 'exploratory'],
         'differential': ['base', 'preprocessing', 'differential'],
-        'functional': ['base', 'preprocessing', 'differential', 'functional'],
-        'shiny': ['base', 'preprocessing', 'exploratory', 'differential', 'shiny'],
-        'report': ['base', 'preprocessing', 'exploratory', 'differential', 'functional', 'report']
+        'functional': ['base', 'preprocessing', 'differential', 'functional']
     ]
     if (!relevant_categories.containsKey(category)) {
         error("Category '${category}' not found in schema.")
@@ -615,8 +650,6 @@ def getRelevantParams(paramset, category) {
         }
     }
 
-    // Preserve runtime-resolved differential columns added by the tool subworkflows,
-    // even though they are no longer user-facing schema parameters.
     [
         'differential_fc_column',
         'differential_pval_column',
