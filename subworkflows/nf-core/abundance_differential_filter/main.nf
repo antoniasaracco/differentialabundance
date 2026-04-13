@@ -77,8 +77,11 @@ def addDifferentialRuntimeParams(meta) {
         'differential_qval_column',
         'differential_foldchanges_logged'
     ])
+    def missing_runtime_params = runtime_params.findAll { key, _value ->
+        !meta.params.containsKey(key)
+    }
 
-    meta + [params: meta.params + runtime_params]
+    meta + [params: meta.params + missing_runtime_params]
 }
 
 def addDifferentialRuntimeParamsToChannel(channel) {
