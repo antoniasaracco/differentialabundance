@@ -357,6 +357,7 @@ def validateConfigurations(configurations) {
         // Remove them from meta to avoid problems with resume
         def nonstaticparams = ['trace_report_suffix']
         def cleanparamset = paramset.findAll { k, v -> !(ignore + nonstaticparams).contains(k) } as Map
+        cleanparamset = ensureDifferentialOutputParams(cleanparamset)
 
         // Remove null to skip validation on them
         // This is needed because validate() will fail otherwise
@@ -373,6 +374,24 @@ def validateConfigurations(configurations) {
 
         return cleanparamset
     }
+}
+
+def ensureDifferentialOutputParams(paramset) {
+    def method = paramset.differential_method ?: 'deseq2'
+    def method_columns = [
+        'deseq2': [fc: 'log2FoldChange', pval: 'pvalue', qval: 'padj', logged: true],
+        'limma' : [fc: 'logFC',          pval: 'P.Value', qval: 'adj.P.Val', logged: true],
+        'dream' : [fc: 'logFC',          pval: 'P.Value', qval: 'adj.P.Val', logged: true],
+        'propd' : [fc: 'LFC',            pval: 'pvalue',  qval: 'significant', logged: true]
+    ]
+    def defaults = method_columns[method] ?: method_columns['deseq2']
+
+    paramset + [
+        differential_fc_column: paramset.differential_fc_column ?: defaults.fc,
+        differential_pval_column: paramset.differential_pval_column ?: defaults.pval,
+        differential_qval_column: paramset.differential_qval_column ?: defaults.qval,
+        differential_foldchanges_logged: (paramset.differential_foldchanges_logged == null ? defaults.logged : paramset.differential_foldchanges_logged)
+    ]
 }
 
 // Get configurations from paramsheet
