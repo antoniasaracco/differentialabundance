@@ -52,18 +52,98 @@
                 }
             },
             [
-                "other",
-                "other/deseq2",
-                "other/deseq2/rnaseq_deseq2_gsea",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.dds.rld.rds",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.sizefactors.tsv",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.dds.rld.rds",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.sizefactors.tsv",
-                "pipeline_info",
+                [
+                    
+                ],
                 "pipeline_info/collated_versions.yml",
                 "pipeline_info/nf_core_differentialabundance_software_versions.yml",
-                "plots",
-                "plots/differential",
+                [
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ],
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
                 "plots/differential/rnaseq_deseq2_gsea",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/png",
@@ -71,25 +151,133 @@
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/png",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/png/volcano.png",
-                "plots/exploratory",
-                "plots/exploratory/rnaseq_deseq2_gsea",
-                "plots/exploratory/rnaseq_deseq2_gsea/treatment",
-                "plots/exploratory/rnaseq_deseq2_gsea/treatment/png",
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/boxplot.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/density.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/mad_correlation.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/pca2d.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/pca3d.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/sample_dendrogram.png",
-                "plots/qc",
-                "plots/qc/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "plots/qc/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.dispersion.png",
                 "plots/qc/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.dispersion.png",
-                "report",
-                "report/gsea",
-                "report/gsea/rnaseq_deseq2_gsea",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols",
+                [
+                    [
+                        
+                    ],
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ],
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.html",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN_4.png",
@@ -112,8 +300,14 @@
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.pvalues_vs_nes_plot.png",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.ranked_gene_list_hND6_versus_mCherry.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.ranked_list_corr_2.png",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols",
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.html",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN_4.png",
@@ -139,25 +333,91 @@
                 "report/rnaseq_deseq2_gsea",
                 "report/rnaseq_deseq2_gsea/SRP254919.zip",
                 "report/rnaseq_deseq2_gsea/SRP254919_differentialabundance_report.html",
-                "shinyngs_app",
+                [
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
                 "shinyngs_app/rnaseq_deseq2_gsea",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919/app.R",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919/data.rds",
-                "tables",
-                "tables/annotation",
-                "tables/annotation/rnaseq_deseq2_gsea",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/annotation/rnaseq_deseq2_gsea/SRP254919.anno.tsv",
-                "tables/differential",
-                "tables/differential/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.results.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.results_filtered.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919_deseq2.annotated.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.results.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.results_filtered.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919_deseq2.annotated.tsv",
-                "tables/processed_abundance",
-                "tables/processed_abundance/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/processed_abundance/rnaseq_deseq2_gsea/all.normalised_counts.tsv",
                 "tables/processed_abundance/rnaseq_deseq2_gsea/all.vst.tsv"
             ],
@@ -188,11 +448,11 @@
                 "all.vst.tsv:md5,cba6236668ad089ba9bbaa9801d5b329"
             ]
         ],
+        "timestamp": "2026-04-14T23:30:45.114091515",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-03-09T13:54:16.868332422"
+            "nf-test": "0.9.5",
+            "nextflow": "25.04.6"
+        }
     },
     "Test profile": {
         "content": [
@@ -247,18 +507,98 @@
                 }
             },
             [
-                "other",
-                "other/deseq2",
-                "other/deseq2/rnaseq_deseq2_gsea",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.dds.rld.rds",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.sizefactors.tsv",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.dds.rld.rds",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.sizefactors.tsv",
-                "pipeline_info",
+                [
+                    
+                ],
                 "pipeline_info/collated_versions.yml",
                 "pipeline_info/nf_core_differentialabundance_software_versions.yml",
-                "plots",
-                "plots/differential",
+                [
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ],
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
                 "plots/differential/rnaseq_deseq2_gsea",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/png",
@@ -266,25 +606,133 @@
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/png",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/png/volcano.png",
-                "plots/exploratory",
-                "plots/exploratory/rnaseq_deseq2_gsea",
-                "plots/exploratory/rnaseq_deseq2_gsea/treatment",
-                "plots/exploratory/rnaseq_deseq2_gsea/treatment/png",
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/boxplot.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/density.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/mad_correlation.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/pca2d.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/pca3d.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/sample_dendrogram.png",
-                "plots/qc",
-                "plots/qc/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "plots/qc/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.dispersion.png",
                 "plots/qc/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.dispersion.png",
-                "report",
-                "report/gsea",
-                "report/gsea/rnaseq_deseq2_gsea",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols",
+                [
+                    [
+                        
+                    ],
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ],
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.html",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN_4.png",
@@ -307,8 +755,14 @@
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.pvalues_vs_nes_plot.png",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.ranked_gene_list_hND6_versus_mCherry.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.ranked_list_corr_2.png",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols",
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.html",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN_4.png",
@@ -334,25 +788,91 @@
                 "report/rnaseq_deseq2_gsea",
                 "report/rnaseq_deseq2_gsea/SRP254919.zip",
                 "report/rnaseq_deseq2_gsea/SRP254919_differentialabundance_report.html",
-                "shinyngs_app",
+                [
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
                 "shinyngs_app/rnaseq_deseq2_gsea",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919/app.R",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919/data.rds",
-                "tables",
-                "tables/annotation",
-                "tables/annotation/rnaseq_deseq2_gsea",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/annotation/rnaseq_deseq2_gsea/SRP254919.anno.tsv",
-                "tables/differential",
-                "tables/differential/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.results.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.results_filtered.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919_deseq2.annotated.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.results.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.results_filtered.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919_deseq2.annotated.tsv",
-                "tables/processed_abundance",
-                "tables/processed_abundance/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/processed_abundance/rnaseq_deseq2_gsea/all.normalised_counts.tsv",
                 "tables/processed_abundance/rnaseq_deseq2_gsea/all.vst.tsv"
             ],
@@ -383,11 +903,11 @@
                 "all.vst.tsv:md5,ae82509f76ed01ad0d041d1a62aef703"
             ]
         ],
+        "timestamp": "2026-04-14T23:19:45.819062955",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-03-09T13:49:35.902655936"
+            "nf-test": "0.9.5",
+            "nextflow": "25.04.6"
+        }
     },
     "Test profile - csv contrasts": {
         "content": [
@@ -442,18 +962,98 @@
                 }
             },
             [
-                "other",
-                "other/deseq2",
-                "other/deseq2/rnaseq_deseq2_gsea",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.dds.rld.rds",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.sizefactors.tsv",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.dds.rld.rds",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.sizefactors.tsv",
-                "pipeline_info",
+                [
+                    
+                ],
                 "pipeline_info/collated_versions.yml",
                 "pipeline_info/nf_core_differentialabundance_software_versions.yml",
-                "plots",
-                "plots/differential",
+                [
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ],
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
                 "plots/differential/rnaseq_deseq2_gsea",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/png",
@@ -461,25 +1061,133 @@
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/png",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/png/volcano.png",
-                "plots/exploratory",
-                "plots/exploratory/rnaseq_deseq2_gsea",
-                "plots/exploratory/rnaseq_deseq2_gsea/treatment",
-                "plots/exploratory/rnaseq_deseq2_gsea/treatment/png",
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/boxplot.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/density.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/mad_correlation.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/pca2d.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/pca3d.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/sample_dendrogram.png",
-                "plots/qc",
-                "plots/qc/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "plots/qc/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.dispersion.png",
                 "plots/qc/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.dispersion.png",
-                "report",
-                "report/gsea",
-                "report/gsea/rnaseq_deseq2_gsea",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols",
+                [
+                    [
+                        
+                    ],
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ],
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.html",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN_4.png",
@@ -502,8 +1210,14 @@
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.pvalues_vs_nes_plot.png",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.ranked_gene_list_hND6_versus_mCherry.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.ranked_list_corr_2.png",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols",
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.html",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN_4.png",
@@ -529,25 +1243,91 @@
                 "report/rnaseq_deseq2_gsea",
                 "report/rnaseq_deseq2_gsea/SRP254919.zip",
                 "report/rnaseq_deseq2_gsea/SRP254919_differentialabundance_report.html",
-                "shinyngs_app",
+                [
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
                 "shinyngs_app/rnaseq_deseq2_gsea",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919/app.R",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919/data.rds",
-                "tables",
-                "tables/annotation",
-                "tables/annotation/rnaseq_deseq2_gsea",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/annotation/rnaseq_deseq2_gsea/SRP254919.anno.tsv",
-                "tables/differential",
-                "tables/differential/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.results.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.results_filtered.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919_deseq2.annotated.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.results.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.results_filtered.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919_deseq2.annotated.tsv",
-                "tables/processed_abundance",
-                "tables/processed_abundance/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/processed_abundance/rnaseq_deseq2_gsea/all.normalised_counts.tsv",
                 "tables/processed_abundance/rnaseq_deseq2_gsea/all.vst.tsv"
             ],
@@ -578,11 +1358,11 @@
                 "all.vst.tsv:md5,ae82509f76ed01ad0d041d1a62aef703"
             ]
         ],
+        "timestamp": "2026-04-14T23:23:05.268492986",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-03-09T13:51:56.049746867"
+            "nf-test": "0.9.5",
+            "nextflow": "25.04.6"
+        }
     },
     "Test profile - with formula": {
         "content": [
@@ -630,8 +1410,24 @@
                 }
             },
             [
-                "other",
-                "other/deseq2",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
                 "other/deseq2/deseq2_rnaseq_gprofiler2_complex",
                 "other/deseq2/deseq2_rnaseq_gprofiler2_complex/full_model_with_interactions_SRP254919.dds.rld.rds",
                 "other/deseq2/deseq2_rnaseq_gprofiler2_complex/full_model_with_interactions_SRP254919.deseq2.sizefactors.tsv",
@@ -651,11 +1447,73 @@
                 "other/gprofiler2/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919",
                 "other/gprofiler2/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919.gprofiler2.gost_results.rds",
                 "other/gprofiler2/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919/treatment_plus_genotype_SRP254919.gprofiler2.gost_results.rds",
-                "pipeline_info",
+                [
+                    
+                ],
                 "pipeline_info/collated_versions.yml",
                 "pipeline_info/nf_core_differentialabundance_software_versions.yml",
-                "plots",
-                "plots/differential",
+                [
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ],
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
                 "plots/differential/deseq2_rnaseq_gprofiler2_complex",
                 "plots/differential/deseq2_rnaseq_gprofiler2_complex/full_model_with_interactions_SRP254919",
                 "plots/differential/deseq2_rnaseq_gprofiler2_complex/full_model_with_interactions_SRP254919/png",
@@ -669,7 +1527,22 @@
                 "plots/differential/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919",
                 "plots/differential/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919/png",
                 "plots/differential/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919/png/volcano.png",
-                "plots/exploratory",
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
                 "plots/exploratory/deseq2_rnaseq_gprofiler2_complex",
                 "plots/exploratory/deseq2_rnaseq_gprofiler2_complex/treatment",
                 "plots/exploratory/deseq2_rnaseq_gprofiler2_complex/treatment/png",
@@ -695,22 +1568,82 @@
                 "plots/gprofiler2/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919/treatment_plus_genotype_SRP254919.gprofiler2.TF.sub_enriched_pathways.png",
                 "plots/gprofiler2/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919/treatment_plus_genotype_SRP254919.gprofiler2.gostplot.html",
                 "plots/gprofiler2/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919/treatment_plus_genotype_SRP254919.gprofiler2.gostplot.png",
-                "plots/qc",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
                 "plots/qc/deseq2_rnaseq_gprofiler2_complex",
                 "plots/qc/deseq2_rnaseq_gprofiler2_complex/full_model_with_interactions_SRP254919.deseq2.dispersion.png",
                 "plots/qc/deseq2_rnaseq_gprofiler2_complex/interaction_genotype_treatment_SRP254919.deseq2.dispersion.png",
                 "plots/qc/deseq2_rnaseq_gprofiler2_complex/treatment_effect_classic_comparison_SRP254919.deseq2.dispersion.png",
                 "plots/qc/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919.deseq2.dispersion.png",
-                "shinyngs_app",
+                [
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
                 "shinyngs_app/deseq2_rnaseq_gprofiler2_complex",
                 "shinyngs_app/deseq2_rnaseq_gprofiler2_complex/SRP254919",
                 "shinyngs_app/deseq2_rnaseq_gprofiler2_complex/SRP254919/app.R",
                 "shinyngs_app/deseq2_rnaseq_gprofiler2_complex/SRP254919/data.rds",
-                "tables",
-                "tables/annotation",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
                 "tables/annotation/deseq2_rnaseq_gprofiler2_complex",
                 "tables/annotation/deseq2_rnaseq_gprofiler2_complex/SRP254919.anno.tsv",
-                "tables/differential",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
                 "tables/differential/deseq2_rnaseq_gprofiler2_complex",
                 "tables/differential/deseq2_rnaseq_gprofiler2_complex/full_model_with_interactions_SRP254919.deseq2.results.tsv",
                 "tables/differential/deseq2_rnaseq_gprofiler2_complex/full_model_with_interactions_SRP254919.deseq2.results_filtered.tsv",
@@ -740,7 +1673,14 @@
                 "tables/gprofiler2/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919/treatment_plus_genotype_SRP254919.gprofiler2.HP.sub_enriched_pathways.tsv",
                 "tables/gprofiler2/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919/treatment_plus_genotype_SRP254919.gprofiler2.TF.sub_enriched_pathways.tsv",
                 "tables/gprofiler2/deseq2_rnaseq_gprofiler2_complex/treatment_plus_genotype_SRP254919/treatment_plus_genotype_SRP254919.gprofiler2.all_enriched_pathways.tsv",
-                "tables/processed_abundance",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
                 "tables/processed_abundance/deseq2_rnaseq_gprofiler2_complex",
                 "tables/processed_abundance/deseq2_rnaseq_gprofiler2_complex/all.normalised_counts.tsv",
                 "tables/processed_abundance/deseq2_rnaseq_gprofiler2_complex/all.rlog.tsv"
@@ -778,11 +1718,11 @@
                 "all.rlog.tsv:md5,bce2521996537372c72f4083f66c5d3b"
             ]
         ],
+        "timestamp": "2026-02-06T18:13:19.245082284",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-06T18:13:19.245082284"
+        }
     },
     "Test profile - multiple reports - csv contrasts": {
         "content": [
@@ -837,18 +1777,98 @@
                 }
             },
             [
-                "other",
-                "other/deseq2",
-                "other/deseq2/rnaseq_deseq2_gsea",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.dds.rld.rds",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.sizefactors.tsv",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.dds.rld.rds",
                 "other/deseq2/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.sizefactors.tsv",
-                "pipeline_info",
+                [
+                    
+                ],
                 "pipeline_info/collated_versions.yml",
                 "pipeline_info/nf_core_differentialabundance_software_versions.yml",
-                "plots",
-                "plots/differential",
+                [
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ],
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
                 "plots/differential/rnaseq_deseq2_gsea",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/png",
@@ -856,25 +1876,133 @@
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/png",
                 "plots/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/png/volcano.png",
-                "plots/exploratory",
-                "plots/exploratory/rnaseq_deseq2_gsea",
-                "plots/exploratory/rnaseq_deseq2_gsea/treatment",
-                "plots/exploratory/rnaseq_deseq2_gsea/treatment/png",
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/boxplot.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/density.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/mad_correlation.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/pca2d.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/pca3d.png",
                 "plots/exploratory/rnaseq_deseq2_gsea/treatment/png/sample_dendrogram.png",
-                "plots/qc",
-                "plots/qc/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "plots/qc/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.dispersion.png",
                 "plots/qc/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.dispersion.png",
-                "report",
-                "report/gsea",
-                "report/gsea/rnaseq_deseq2_gsea",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols",
+                [
+                    [
+                        
+                    ],
+                    [
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ],
+                        [
+                            [
+                                [
+                                    
+                                ]
+                            ],
+                            [
+                                [
+                                    
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                
+                            ]
+                        ],
+                        [
+                            [
+                                
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.html",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN_4.png",
@@ -897,8 +2025,14 @@
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.pvalues_vs_nes_plot.png",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.ranked_gene_list_hND6_versus_mCherry.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919/mh.all.v2022.1.Mm.symbols/treatment_mCherry_hND6__SRP254919.mh.all.v2022.1.Mm.symbols.ranked_list_corr_2.png",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919",
-                "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols",
+                [
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.html",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN.tsv",
                 "report/gsea/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919/mh.all.v2022.1.Mm.symbols/gene_sets_treatment_mCherry_hND6_sample_number_SRP254919.mh.all.v2022.1.Mm.symbols.HALLMARK_KRAS_SIGNALING_DN_4.png",
@@ -925,25 +2059,91 @@
                 "report/rnaseq_deseq2_gsea/SRP254919.zip",
                 "report/rnaseq_deseq2_gsea/SRP254919_differentialabundance_report.html",
                 "report/rnaseq_deseq2_gsea/SRP254919_quarto.html",
-                "shinyngs_app",
+                [
+                    [
+                        [
+                            
+                        ]
+                    ]
+                ],
                 "shinyngs_app/rnaseq_deseq2_gsea",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919/app.R",
                 "shinyngs_app/rnaseq_deseq2_gsea/SRP254919/data.rds",
-                "tables",
-                "tables/annotation",
-                "tables/annotation/rnaseq_deseq2_gsea",
+                [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ],
+                    [
+                        [
+                            
+                        ],
+                        [
+                            
+                        ]
+                    ]
+                ],
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/annotation/rnaseq_deseq2_gsea/SRP254919.anno.tsv",
-                "tables/differential",
-                "tables/differential/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.results.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919.deseq2.results_filtered.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6__SRP254919_deseq2.annotated.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.results.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919.deseq2.results_filtered.tsv",
                 "tables/differential/rnaseq_deseq2_gsea/treatment_mCherry_hND6_sample_number_SRP254919_deseq2.annotated.tsv",
-                "tables/processed_abundance",
-                "tables/processed_abundance/rnaseq_deseq2_gsea",
+                [
+                    [
+                        
+                    ],
+                    [
+                        
+                    ]
+                ],
+                [
+                    
+                ],
                 "tables/processed_abundance/rnaseq_deseq2_gsea/all.normalised_counts.tsv",
                 "tables/processed_abundance/rnaseq_deseq2_gsea/all.vst.tsv"
             ],
@@ -974,10 +2174,10 @@
                 "all.vst.tsv:md5,ae82509f76ed01ad0d041d1a62aef703"
             ]
         ],
+        "timestamp": "2026-04-14T23:26:35.622122273",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-03-09T13:57:35.480137088"
+            "nf-test": "0.9.5",
+            "nextflow": "25.04.6"
+        }
     }
 }
