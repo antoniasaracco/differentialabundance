@@ -97,6 +97,7 @@ workflow PIPELINE_INITIALISATION {
         ? getParamsheetConfigurations()
         : getDefaultConfigurations()
     paramsets = validateConfigurations(configurations)
+        .collect { paramset -> addDifferentialRuntimeParams(paramset) }
     ch_paramsets = Channel.fromList(paramsets)
         .map { paramset -> [
             id: paramset.study_name,
@@ -357,7 +358,6 @@ def validateConfigurations(configurations) {
         // Remove them from meta to avoid problems with resume
         def nonstaticparams = ['trace_report_suffix']
         def cleanparamset = paramset.findAll { k, v -> !(ignore + nonstaticparams).contains(k) } as Map
-        cleanparamset = ensureDifferentialOutputParams(cleanparamset)
 
         // Remove null to skip validation on them
         // This is needed because validate() will fail otherwise
@@ -376,22 +376,42 @@ def validateConfigurations(configurations) {
     }
 }
 
-def ensureDifferentialOutputParams(paramset) {
-    def method = paramset.differential_method ?: 'deseq2'
-    def method_columns = [
-        'deseq2': [fc: 'log2FoldChange', pval: 'pvalue', qval: 'padj', logged: true],
-        'limma' : [fc: 'logFC',          pval: 'P.Value', qval: 'adj.P.Val', logged: true],
-        'dream' : [fc: 'logFC',          pval: 'P.Value', qval: 'adj.P.Val', logged: true],
-        'propd' : [fc: 'LFC',            pval: 'pvalue',  qval: 'significant', logged: true]
-    ]
-    def defaults = method_columns[method] ?: method_columns['deseq2']
+def getDifferentialMethodRuntimeParams(differential_method) {
+    def runtime_params = [
+        'deseq2': [
+            differential_fc_column : 'log2FoldChange',
+            differential_pval_column : 'pvalue',
+            differential_qval_column : 'padj',
+            differential_foldchanges_logged: true
+        ],
+        'limma' : [
+            differential_fc_column : 'logFC',
+            differential_pval_column : 'P.Value',
+            differential_qval_column : 'adj.P.Val',
+            differential_foldchanges_logged: true
+        ],
+        'propd' : [
+            differential_fc_column : 'LFC',
+            differential_pval_column : 'rcDdis',
+            differential_qval_column : 'rcDdis',
+            differential_foldchanges_logged: true
+        ],
+        'dream' : [
+            differential_fc_column : 'logFC',
+            differential_pval_column : 'P.Value',
+            differential_qval_column : 'adj.P.Val',
+            differential_foldchanges_logged: true
+        ]
+    ][differential_method]
+    runtime_params ?: [:]
+}
 
-    paramset + [
-        differential_fc_column: paramset.differential_fc_column ?: defaults.fc,
-        differential_pval_column: paramset.differential_pval_column ?: defaults.pval,
-        differential_qval_column: paramset.differential_qval_column ?: defaults.qval,
-        differential_foldchanges_logged: (paramset.differential_foldchanges_logged == null ? defaults.logged : paramset.differential_foldchanges_logged)
-    ]
+def addDifferentialRuntimeParams(paramset) {
+    def runtime_params = getDifferentialMethodRuntimeParams(paramset.differential_method)
+    def missing_runtime_params = runtime_params.findAll { key, _value ->
+        !paramset.containsKey(key)
+    }
+    paramset + missing_runtime_params
 }
 
 // Get configurations from paramsheet
@@ -567,8 +587,11 @@ def prepareModuleOutput(channel, paramsets, List meta_keys_to_remove = null, Boo
             def meta_out = it[2]
             // Remove unnecessary keys from meta, when asked
             def meta_cleaned = (meta_keys_to_remove) ? meta_out.findAll{ k,v -> !meta_keys_to_remove.contains(k) } : meta_out
-            // Replace output meta simplified params by full params from paramset
-            def meta = meta_cleaned + [params: meta_paramset.params]
+            // Preserve runtime-resolved params only on keyed outputs that need them,
+            // while keeping the unkeyed meta shape unchanged for existing joins.
+            def meta = use_meta_key
+                ? meta_cleaned + [params: meta_paramset.params + (meta_cleaned.params ?: [:])]
+                : meta_cleaned + [params: meta_paramset.params]
 
             if (use_meta_key) {
                 // Define a key using the basic meta structure: only containing id, paramset_name and params, when asked.

@@ -18,6 +18,16 @@ def mergeMaps(meta, meta2){
     }
 }
 
+def getDifferentialMethodRuntimeParams(differential_method) {
+    def runtime_params = [
+        'deseq2': [differential_fc_column: 'log2FoldChange', differential_qval_column: 'padj'],
+        'limma' : [differential_fc_column: 'logFC',          differential_qval_column: 'adj.P.Val'],
+        'propd' : [differential_fc_column: 'LFC',            differential_qval_column: 'rcDdis'],
+        'dream' : [differential_fc_column: 'logFC',          differential_qval_column: 'adj.P.Val']
+    ][differential_method]
+    runtime_params ?: [:]
+}
+
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
@@ -32,25 +42,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     main:
 
     ch_versions = channel.empty()
-
-    def method_columns = [
-        'deseq2': [fc: 'log2FoldChange', pval: 'pvalue', qval: 'padj', logged: true],
-        'limma' : [fc: 'logFC',          pval: 'P.Value', qval: 'adj.P.Val', logged: true],
-        'dream' : [fc: 'logFC',          pval: 'P.Value', qval: 'adj.P.Val', logged: true],
-        'propd' : [fc: 'LFC',            pval: 'pvalue',  qval: 'significant', logged: true]
-    ]
-
-    ch_input = ch_input
-        .map { meta, abundance, analysis_method, fc_threshold, stat_threshold ->
-            def defaults = method_columns[analysis_method] ?: method_columns['deseq2']
-            def enriched_params = (meta.params ?: [:]) + [
-                differential_fc_column: meta.params?.differential_fc_column ?: defaults.fc,
-                differential_pval_column: meta.params?.differential_pval_column ?: defaults.pval,
-                differential_qval_column: meta.params?.differential_qval_column ?: defaults.qval,
-                differential_foldchanges_logged: (meta.params?.differential_foldchanges_logged == null ? defaults.logged : meta.params.differential_foldchanges_logged)
-            ]
-            [meta + [params: enriched_params], abundance, analysis_method, fc_threshold, stat_threshold]
-        }
 
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta, abundance, analysis_method, fc_threshold, stat_threshold, samplesheet, transcript_length, control_features, meta_contrast, variable, reference, target, formula, comparison ->
@@ -222,20 +213,22 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
             def method_params = [
-                'deseq2': [fc_cardinality: '>=', stat_cardinality: '<='],
-                'limma' : [fc_cardinality: '>=', stat_cardinality: '<='],
-                'propd' : [fc_cardinality: '>=', stat_cardinality: '<='],
-                'dream' : [fc_cardinality: '>=', stat_cardinality: '<=']
+                'deseq2': [fc_column: 'log2FoldChange', fc_cardinality: '>=', stat_column: 'padj', stat_cardinality: '<='],
+                'limma' : [fc_column: 'logFC', fc_cardinality: '>=', stat_column: 'adj.P.Val', stat_cardinality: '<='],
+                'propd' : [fc_column: 'LFC', fc_cardinality: '>=', stat_column: 'significant', stat_cardinality: '<='],
+                'dream' : [fc_column: 'logFC', fc_cardinality: '>=', stat_column: 'adj.P.Val', stat_cardinality: '<=']
             ]
-            def defaults = method_columns[meta.differential_method] ?: method_columns['deseq2']
+            def runtime_params = getDifferentialMethodRuntimeParams(meta.differential_method)
+            def diff_fc_column = meta.params?.differential_fc_column ?: runtime_params?.differential_fc_column ?: method_params[meta.differential_method].fc_column
+            def diff_qval_column = meta.params?.differential_qval_column ?: runtime_params?.differential_qval_column ?: method_params[meta.differential_method].stat_column
             filter_input: [meta + filter_meta, results]
             fc_input: [
-                meta.params?.differential_fc_column ?: defaults.fc,
+                diff_fc_column,
                 filter_meta.fc_threshold,
                 method_params[meta.differential_method].fc_cardinality
             ]
             stat_input: [
-                meta.params?.differential_qval_column ?: defaults.qval,
+                diff_qval_column,
                 filter_meta.stat_threshold,
                 method_params[meta.differential_method].stat_cardinality
             ]
