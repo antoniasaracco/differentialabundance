@@ -18,6 +18,16 @@ def mergeMaps(meta, meta2){
     }
 }
 
+def getDifferentialMethodRuntimeParams(differential_method) {
+    def runtime_params = [
+        'deseq2': [differential_fc_column: 'log2FoldChange', differential_qval_column: 'padj'],
+        'limma' : [differential_fc_column: 'logFC',          differential_qval_column: 'adj.P.Val'],
+        'propd' : [differential_fc_column: 'LFC',            differential_qval_column: 'rcDdis'],
+        'dream' : [differential_fc_column: 'logFC',          differential_qval_column: 'adj.P.Val']
+    ][differential_method]
+    runtime_params ?: [:]
+}
+
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
@@ -203,31 +213,22 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
             def method_params = [
-                'deseq2': [
-                    fc_column: 'log2FoldChange', fc_cardinality: '>=',
-                    stat_column: 'padj', stat_cardinality: '<='
-                ],
-                'limma' : [
-                    fc_column: 'logFC', fc_cardinality: '>=',
-                    stat_column: 'adj.P.Val', stat_cardinality: '<='
-                ],
-                'propd' : [
-                    fc_column: 'LFC', fc_cardinality: '>=',
-                    stat_column: 'significant', stat_cardinality: '<='
-                ],
-                'dream' : [
-                    fc_column: 'logFC', fc_cardinality: '>=',
-                    stat_column: 'adj.P.Val', stat_cardinality: '<='
-                ]
+                'deseq2': [fc_column: 'log2FoldChange', fc_cardinality: '>=', stat_column: 'padj', stat_cardinality: '<='],
+                'limma' : [fc_column: 'logFC', fc_cardinality: '>=', stat_column: 'adj.P.Val', stat_cardinality: '<='],
+                'propd' : [fc_column: 'LFC', fc_cardinality: '>=', stat_column: 'significant', stat_cardinality: '<='],
+                'dream' : [fc_column: 'logFC', fc_cardinality: '>=', stat_column: 'adj.P.Val', stat_cardinality: '<=']
             ]
+            def runtime_params = getDifferentialMethodRuntimeParams(meta.differential_method)
+            def diff_fc_column = meta.params?.differential_fc_column ?: runtime_params?.differential_fc_column ?: method_params[meta.differential_method].fc_column
+            def diff_qval_column = meta.params?.differential_qval_column ?: runtime_params?.differential_qval_column ?: method_params[meta.differential_method].stat_column
             filter_input: [meta + filter_meta, results]
             fc_input: [
-                method_params[meta.differential_method].fc_column,
+                diff_fc_column,
                 filter_meta.fc_threshold,
                 method_params[meta.differential_method].fc_cardinality
             ]
             stat_input: [
-                method_params[meta.differential_method].stat_column,
+                diff_qval_column,
                 filter_meta.stat_threshold,
                 method_params[meta.differential_method].stat_cardinality
             ]

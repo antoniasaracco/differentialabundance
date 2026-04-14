@@ -97,6 +97,7 @@ workflow PIPELINE_INITIALISATION {
         ? getParamsheetConfigurations()
         : getDefaultConfigurations()
     paramsets = validateConfigurations(configurations)
+        .collect { paramset -> addDifferentialRuntimeParams(paramset) }
     ch_paramsets = Channel.fromList(paramsets)
         .map { paramset -> [
             id: paramset.study_name,
@@ -375,6 +376,44 @@ def validateConfigurations(configurations) {
     }
 }
 
+def getDifferentialMethodRuntimeParams(differential_method) {
+    def runtime_params = [
+        'deseq2': [
+            differential_fc_column : 'log2FoldChange',
+            differential_pval_column : 'pvalue',
+            differential_qval_column : 'padj',
+            differential_foldchanges_logged: true
+        ],
+        'limma' : [
+            differential_fc_column : 'logFC',
+            differential_pval_column : 'P.Value',
+            differential_qval_column : 'adj.P.Val',
+            differential_foldchanges_logged: true
+        ],
+        'propd' : [
+            differential_fc_column : 'LFC',
+            differential_pval_column : 'rcDdis',
+            differential_qval_column : 'rcDdis',
+            differential_foldchanges_logged: true
+        ],
+        'dream' : [
+            differential_fc_column : 'logFC',
+            differential_pval_column : 'P.Value',
+            differential_qval_column : 'adj.P.Val',
+            differential_foldchanges_logged: true
+        ]
+    ][differential_method]
+    runtime_params ?: [:]
+}
+
+def addDifferentialRuntimeParams(paramset) {
+    def runtime_params = getDifferentialMethodRuntimeParams(paramset.differential_method)
+    def missing_runtime_params = runtime_params.findAll { key, _value ->
+        !paramset.containsKey(key)
+    }
+    paramset + missing_runtime_params
+}
+
 // Get configurations from paramsheet
 def getParamsheetConfigurations() {
     // Get paramsheet path
@@ -548,8 +587,11 @@ def prepareModuleOutput(channel, paramsets, List meta_keys_to_remove = null, Boo
             def meta_out = it[2]
             // Remove unnecessary keys from meta, when asked
             def meta_cleaned = (meta_keys_to_remove) ? meta_out.findAll{ k,v -> !meta_keys_to_remove.contains(k) } : meta_out
-            // Replace output meta simplified params by full params from paramset
-            def meta = meta_cleaned + [params: meta_paramset.params]
+            // Preserve runtime-resolved params only on keyed outputs that need them,
+            // while keeping the unkeyed meta shape unchanged for existing joins.
+            def meta = use_meta_key
+                ? meta_cleaned + [params: meta_paramset.params + (meta_cleaned.params ?: [:])]
+                : meta_cleaned + [params: meta_paramset.params]
 
             if (use_meta_key) {
                 // Define a key using the basic meta structure: only containing id, paramset_name and params, when asked.
