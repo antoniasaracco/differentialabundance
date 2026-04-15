@@ -73,11 +73,14 @@ def addDifferentialRuntimeParams(meta) {
         'differential_qval_column',
         'differential_foldchanges_logged'
     ])
+
+    def existing_params = meta.params ?: [:]
+
     def missing_runtime_params = runtime_params.findAll { key, _value ->
-        !meta.params.containsKey(key)
+        !existing_params.containsKey(key)
     }
 
-    meta + [params: meta.params + missing_runtime_params]
+    meta + [params: existing_params + missing_runtime_params]
 }
 
 
