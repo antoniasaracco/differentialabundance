@@ -239,7 +239,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     ch_session_info = DESEQ2_DIFFERENTIAL.out.session_info
         .mix(LIMMA_DIFFERENTIAL.out.session_info)
-        .mix(PROPR_PROPD.out.session_info)
 
     ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts
         .mix(DESEQ2_NORM.out.vst_counts)
