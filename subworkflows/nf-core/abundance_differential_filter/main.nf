@@ -18,7 +18,7 @@ def mergeMaps(meta, meta2){
     }
 }
 
-def getDifferentialFilterParams(differential_method) {
+def getDifferentialMethodParams(differential_method) {
     def method_params = [
         'deseq2': [
             differential_fc_column         : 'log2FoldChange',
@@ -252,7 +252,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_diff_filter_params = ch_results
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
-            def method_params = getDifferentialFilterParams(meta.differential_method)
+            def method_params = getDifferentialMethodParams(meta.differential_method)
             filter_input: [meta + filter_meta, results]
             fc_input: [
                 method_params.differential_fc_column,
