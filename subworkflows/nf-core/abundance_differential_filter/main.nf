@@ -18,40 +18,28 @@ def mergeMaps(meta, meta2){
     }
 }
 
-def getDifferentialMethodParams(differential_method) {
+def getDifferentialFilterParams(differential_method) {
     def method_params = [
         'deseq2': [
             differential_fc_column         : 'log2FoldChange',
-            differential_pval_column       : 'pvalue',
-            differential_qval_column       : 'padj',
-            differential_foldchanges_logged: true,
             fc_cardinality                 : '>=',
             stat_column                    : 'padj',
             stat_cardinality               : '<='
         ],
         'limma' : [
             differential_fc_column         : 'logFC',
-            differential_pval_column       : 'P.Value',
-            differential_qval_column       : 'adj.P.Val',
-            differential_foldchanges_logged: true,
             fc_cardinality                 : '>=',
             stat_column                    : 'adj.P.Val',
             stat_cardinality               : '<='
         ],
         'propd' : [
             differential_fc_column         : 'LFC',
-            differential_pval_column       : 'rcDdis',
-            differential_qval_column       : 'rcDdis',
-            differential_foldchanges_logged: true,
             fc_cardinality                 : '>=',
             stat_column                    : 'significant',
             stat_cardinality               : '<='
         ],
         'dream' : [
             differential_fc_column         : 'logFC',
-            differential_pval_column       : 'P.Value',
-            differential_qval_column       : 'adj.P.Val',
-            differential_foldchanges_logged: true,
             fc_cardinality                 : '>=',
             stat_column                    : 'adj.P.Val',
             stat_cardinality               : '<='
@@ -264,7 +252,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_diff_filter_params = ch_results
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
-            def method_params = getDifferentialMethodParams(meta.differential_method)
+            def method_params = getDifferentialFilterParams(meta.differential_method)
             filter_input: [meta + filter_meta, results]
             fc_input: [
                 method_params.differential_fc_column,
