@@ -65,25 +65,6 @@ def getDifferentialMethodParams(differential_method) {
     method_params
 }
 
-def addDifferentialRuntimeParams(meta) {
-    def method_params = getDifferentialMethodParams(meta.differential_method)
-    def runtime_params = method_params.subMap([
-        'differential_fc_column',
-        'differential_pval_column',
-        'differential_qval_column',
-        'differential_foldchanges_logged'
-    ])
-
-    def existing_params = meta.params ?: [:]
-
-    def missing_runtime_params = runtime_params.findAll { key, _value ->
-        !existing_params.containsKey(key)
-    }
-
-    meta + [params: existing_params + missing_runtime_params]
-}
-
-
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
@@ -101,7 +82,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta, abundance, analysis_method, fc_threshold, stat_threshold, samplesheet, transcript_length, control_features, meta_contrast, variable, reference, target, formula, comparison ->
-        def meta_with_method = addDifferentialRuntimeParams(meta + [ 'differential_method': analysis_method ])        
+        def meta_with_method = meta + [ 'differential_method': analysis_method ]
         def meta_for_diff = mergeMaps(meta_contrast, meta_with_method)
         samples_and_matrix:
             [ meta_with_method, samplesheet, abundance ]
@@ -257,6 +238,21 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .mix(LIMMA_DIFFERENTIAL.out.model)
         .mix(VARIANCEPARTITION_DREAM.out.model)
 
+    ch_size_factors = DESEQ2_DIFFERENTIAL.out.size_factors
+
+    ch_dispersion_plot = DESEQ2_DIFFERENTIAL.out.dispersion_plot_png
+        .mix(DESEQ2_DIFFERENTIAL.out.dispersion_plot_pdf)
+
+    ch_md_plot = LIMMA_DIFFERENTIAL.out.md_plot
+
+    ch_rdata = DESEQ2_DIFFERENTIAL.out.rdata
+        .mix(LIMMA_DIFFERENTIAL.out.rdata)
+        .mix(PROPR_PROPD.out.rdata)
+
+    ch_session_info = DESEQ2_DIFFERENTIAL.out.session_info
+        .mix(LIMMA_DIFFERENTIAL.out.session_info)
+        .mix(PROPR_PROPD.out.session_info)
+
     ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts
         .mix(DESEQ2_NORM.out.vst_counts)
         .groupTuple()
@@ -271,7 +267,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
             def method_params = getDifferentialMethodParams(meta.differential_method)
             filter_input: [meta + filter_meta, results]
             fc_input: [
-                meta.params.differential_fc_column,
+                method_params.differential_fc_column,
                 filter_meta.fc_threshold,
                 method_params.fc_cardinality
             ]
@@ -302,5 +298,10 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     normalised_matrix          = ch_normalised_matrix
     variance_stabilised_matrix = ch_variance_stabilised_matrix
     model                      = ch_model
+    size_factors               = ch_size_factors
+    dispersion_plot            = ch_dispersion_plot
+    md_plot                    = ch_md_plot
+    rdata                      = ch_rdata
+    session_info               = ch_session_info
     versions                   = ch_versions
 }
